@@ -1,60 +1,73 @@
-import Head from 'next/head';
+import { LandingPageHeader } from '@/components/LandingPage/Header';
+import { Box, Center, Text, Button } from '@chakra-ui/react';
+import { Footer } from '@/components/Shared/Footer';
+import { LandingPageContainer } from '@/components/LandingPage/Container';
 import Image from 'next/image';
-
-import styles from '@/styles/Home.module.css';
+import { useState } from 'react';
 
 export default function Home() {
+  const [state, setState] = useState(true);
+
   return (
-    <div className={styles.container}>
-      <Head>
-        <title>Hello World</title>
-        <meta
-          name="description"
-          content="TypeScript starter for Next.js that includes all you need to build amazing apps"
-        />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{` `}
-          <code className={styles.code}>src/pages/index.tsx</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h2>Learn &rarr;</h2>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/canary/examples"
-            className={styles.card}
+    <>
+      <LandingPageContainer>
+        <>
+          <LandingPageHeader state={state} setState={setState} />
+          <Box
+            bg="white"
+            color="black"
+            display="flex"
+            flexDirection="row"
+            mx="110px"
           >
-            <h2>Examples &rarr;</h2>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=typescript-nextjs-starter"
-            className={styles.card}
-          >
-            <h2>Deploy &rarr;</h2>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-    </div>
+            <Box
+              ml="50px"
+              mr="10px"
+              display="flex"
+              flexDirection="column"
+              alignContent="center"
+            >
+              <Text fontSize="6xl">
+                {state ? `Mantine for Teachers` : `Mantine for Students`}
+              </Text>
+              <Text fontSize="3xl">
+                {state
+                  ? `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
+                  : `Exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in magna in aute`}
+              </Text>
+              <Center>
+                <Button
+                  w="300px"
+                  mt="40px"
+                  colorScheme="white"
+                  size="lg"
+                  variant="outline"
+                >
+                  Get started
+                </Button>
+              </Center>
+            </Box>
+            <Center bg="white" h="347px" w="full" color="blue" mr="40px">
+              {state ? (
+                <Image
+                  src={`/Teacher.png`}
+                  alt="Picture of the teacher illustration"
+                  width={347}
+                  height={347}
+                />
+              ) : (
+                <Image
+                  src={`/Student.png`}
+                  alt="Picture of the studnet illustration"
+                  width={347}
+                  height={347}
+                />
+              )}
+            </Center>
+          </Box>
+          <Footer />
+        </>
+      </LandingPageContainer>
+    </>
   );
 }

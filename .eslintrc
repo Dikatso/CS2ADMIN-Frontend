@@ -4,6 +4,7 @@
   "rules": {
     "prettier/prettier": "error",
     "camelcase": "off",
+    "no-var": "off",
     "import/prefer-default-export": "off",
     "react/jsx-filename-extension": "off",
     "react/jsx-props-no-spreading": "off",
