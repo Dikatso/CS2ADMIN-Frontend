@@ -18,11 +18,12 @@ export default function Home() {
             color="black"
             display="flex"
             flexDirection="row"
-            mx="110px"
+            justifyContent="center"
+            alignItems="center"
+            mx="100px"
           >
             <Box
-              ml="50px"
-              mr="10px"
+              bg="white"
               display="flex"
               flexDirection="column"
               alignContent="center"
@@ -47,7 +48,7 @@ export default function Home() {
                 </Button>
               </Center>
             </Box>
-            <Center bg="white" h="347px" w="full" color="blue" mr="40px">
+            <Center bg="white" h="347px" w="full" color="blue">
               {state ? (
                 <Image
                   src={`/Teacher.png`}
