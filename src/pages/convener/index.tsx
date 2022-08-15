@@ -1,4 +1,4 @@
-import { ConvenerPageHeader } from '@/components/ConvenerComponents/Header';
+import { ConvenerPageHeader } from '@/components/Convener/Header';
 import { Footer } from '@/components/Shared/Footer';
 import { Box, Center, Text } from '@chakra-ui/react';
 import { NextPage } from 'next';
