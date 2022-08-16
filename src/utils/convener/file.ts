@@ -42,7 +42,7 @@ export const extractDataIntoArray = (file: File[]): Array<studentData> => {
         test1: line.T1,
         test2: line.T2,
         final1016: line.asgAvg1016,
-        asignmentAverage1016: line.final1016,
+        assignmentAverage1016: line.final1016,
         testAverage1016: line.testAvg1016,
       };
       students.push(student);
