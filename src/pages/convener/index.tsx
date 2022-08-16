@@ -3,8 +3,11 @@ import { Footer } from '@/components/Shared/Footer';
 import { Box, Center, Text } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 
 const Convener: NextPage = () => {
+  const router = useRouter();
+
   return (
     <Box bg="white">
       <ConvenerPageHeader />
@@ -29,6 +32,7 @@ const Convener: NextPage = () => {
           rounded="2xl"
           transition="transform 280ms"
           _hover={{ cursor: `pointer`, transform: `translateY(-10px)` }}
+          onClick={() => router.push(`/convener/analysis`)}
         >
           <Center display="flex" flexDirection="column">
             <Image
