@@ -19,11 +19,11 @@ export const Footer: FC = () => {
         padding="1rem"
       >
         <a
-          href="https://vercel.com?utm_source=typescript-nextjs-starter"
+          // href="https://vercel.com?utm_source=typescript-nextjs-starter"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Powered by{` `}
+          Powered by{` BN x DM x LM `}
           <span className={styles.logo}>
             <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
           </span>
