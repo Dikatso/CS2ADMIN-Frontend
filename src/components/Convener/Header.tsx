@@ -1,9 +1,10 @@
 import { createStyles, Header, Container, Group } from '@mantine/core';
 import { MantineLogo } from '@mantine/ds';
 import { LogOutPopOver } from '@/components/Convener/LogOutPopOver';
+import { Box, color, extendTheme } from '@chakra-ui/react';
 import { Button } from '@chakra-ui/button';
-import { Box } from '@chakra-ui/react';
 import React from 'react';
+import router from 'next/router';
 
 const HEADER_HEIGHT = 60;
 
@@ -92,15 +93,38 @@ export const ConvenerPageHeader: React.FC = () => {
   return (
     <Header height={HEADER_HEIGHT} className={classes.root}>
       <Container className={classes.header}>
-        <MantineLogo size={28} />
-        <Group spacing={2} className={classes.links}>
-          <Button colorScheme="teal" size="md" variant={`ghost`}>
+        {/* <MantineLogo size={28} /> */}
+        <div>CS2ADMIN </div>
+        {/* <Box textStyle='h1'>This is a box</Box> */}
+        <Group spacing={5} className={classes.links}>
+          <Button
+            colorScheme="teal"
+            size="md"
+            variant={`ghost`}
+            onClick={() => {
+              router.push(`/convener`);
+            }}
+          >
             Home
           </Button>
-          <Button colorScheme="teal" size="md" variant={`ghost`}>
+          <Button
+            colorScheme="teal"
+            size="md"
+            variant={`ghost`}
+            onClick={() => {
+              router.push(`/convener/analysis`);
+            }}
+          >
             Analysis
           </Button>
-          <Button colorScheme="teal" size="md" variant={`ghost`}>
+          <Button
+            colorScheme="teal"
+            size="md"
+            variant={`ghost`}
+            onClick={() => {
+              router.push(`/convener/queries`);
+            }}
+          >
             Enquiries
           </Button>
           <Box>
