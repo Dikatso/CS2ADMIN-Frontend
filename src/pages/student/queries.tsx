@@ -15,6 +15,7 @@ import { MantineLogo } from '@mantine/ds';
 import { Button } from '@chakra-ui/button';
 import { Box } from '@chakra-ui/react';
 import { TableSort } from '@/components/Student/TableSort';
+import { StudentPageHeader } from '@/components/Student/Header';
 
 const HEADER_HEIGHT = 60;
 
@@ -120,9 +121,9 @@ const StudentMenu: React.FC = () => {
       variant={link.variant}
       onClick={() => {
         if (link.tag === `home`) {
-          router.push(`/`);
+          router.push(`/student`);
         } else {
-          router.push(`/signup`);
+          router.push(`/student/queries`);
         }
       }}
     >
@@ -136,29 +137,9 @@ const StudentMenu: React.FC = () => {
 
   return (
     <>
-      <Header height={HEADER_HEIGHT} mb={80} className={classes.root}>
-        <Container className={classes.header}>
-          <MantineLogo size={28} />
-          <Group spacing={5} className={classes.links}>
-            {items}
-          </Group>
-
-          <Transition
-            transition="pop-top-right"
-            duration={200}
-            mounted={opened}
-          >
-            {(styles) => (
-              <Paper className={classes.dropdown} withBorder style={styles}>
-                {items}
-              </Paper>
-            )}
-          </Transition>
-        </Container>
-      </Header>
-
+      <StudentPageHeader />
       <Box>
-        <Accordion variant="contained" mx={150}>
+        <Accordion variant="contained" mx={150} my={50}>
           <Accordion.Item value="photos">
             <Accordion.Control
               icon={<IconPhoto size={20} color={getColor(`red`)} />}
@@ -170,7 +151,7 @@ const StudentMenu: React.FC = () => {
                 tableType="assignment"
                 data={[
                   {
-                    id: `MSHDIK008`,
+                    id: `yg25`,
                     course: `CSC3002F`,
                     assignNo: `1`,
                     submitDate: `15-08-2022`,
@@ -178,7 +159,7 @@ const StudentMenu: React.FC = () => {
                     status: `Submitted`,
                   },
                   {
-                    id: `MTNKAR001`,
+                    id: `242hg`,
                     course: `CSC3002F`,
                     assignNo: `6`,
                     submitDate: `20-08-2022`,
@@ -201,7 +182,7 @@ const StudentMenu: React.FC = () => {
                 tableType="test"
                 data={[
                   {
-                    id: `MSHDIK008`,
+                    id: `sf34`,
                     course: `CSC3002F`,
                     assignNo: `1`,
                     testNo: `2`,
@@ -210,7 +191,7 @@ const StudentMenu: React.FC = () => {
                     status: `Submitted`,
                   },
                   {
-                    id: `MTNKAR001`,
+                    id: `df65`,
                     course: `CSC3002F`,
                     assignNo: ``,
                     submitDate: `20-08-2022`,
@@ -233,7 +214,7 @@ const StudentMenu: React.FC = () => {
                 tableType="assignment"
                 data={[
                   {
-                    id: `MSHDIK008`,
+                    id: `67ty`,
                     course: `CSC3002F`,
                     assignNo: `1`,
                     submitDate: `15-08-2022`,
@@ -241,7 +222,7 @@ const StudentMenu: React.FC = () => {
                     status: `Submitted`,
                   },
                   {
-                    id: `MTNKAR001`,
+                    id: `dt76`,
                     course: `CSC3002F`,
                     assignNo: ``,
                     submitDate: `20-08-2022`,
