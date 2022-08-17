@@ -59,6 +59,7 @@ const Convener: NextPage = () => {
           rounded="2xl"
           transition="transform 280ms"
           _hover={{ cursor: `pointer`, transform: `translateY(-10px)` }}
+          onClick={() => router.push(`/convener/queries`)}
         >
           <Center display="flex" flexDirection="column">
             <Image
