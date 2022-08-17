@@ -29,13 +29,13 @@ export default function Home() {
               flexDirection="column"
               alignContent="center"
             >
-              <Text fontSize="6xl">
-                {state ? `Mantine for Teachers` : `Mantine for Students`}
+              <Text fontSize="6xl" textAlign="center">
+                {state ? `CSC2ADMIN ` : `CSC2ADMIN`}
               </Text>
-              <Text fontSize="3xl">
+              <Text fontSize="3xl" textAlign="center">
                 {state
-                  ? `Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`
-                  : `Exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in magna in aute`}
+                  ? `A tool design to offer a helping hand with CS2 admin issues from analysing the students performance to attending to student's queries.`
+                  : `A convinient tool to connect you to the teaching staff. Submit everything from assignment extension requests to general queries.`}
               </Text>
               <Center>
                 <Button
@@ -45,7 +45,7 @@ export default function Home() {
                   size="lg"
                   variant="outline"
                   onClick={() => {
-                    router.push(`./student`);
+                    router.push(`login`);
                   }}
                 >
                   Get started
