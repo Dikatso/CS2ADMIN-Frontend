@@ -128,7 +128,7 @@ export const LandingPageHeader: React.FC<LandingPageHeaderProps> = ({
         if (link.tag === `login`) {
           router.push(`/login`);
         } else {
-          router.push(`/signup`);
+          router.push(`/register`);
         }
       }}
     >
@@ -157,7 +157,13 @@ export const LandingPageHeader: React.FC<LandingPageHeaderProps> = ({
             For Teachers
           </Button>
         </Stack>
-        <MantineLogo size={28} />
+        {/* <MantineLogo size={28} /> */}
+        {/* <Image
+                  src={`/Teacher.png`}
+                  alt="Picture of the teacher illustration"
+                  width={347}
+                  height={347}
+                /> */}
         <Group spacing={5} className={classes.links}>
           {items}
         </Group>
