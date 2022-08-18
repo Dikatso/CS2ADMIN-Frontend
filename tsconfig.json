@@ -19,6 +19,7 @@
       "@/*": ["./src/*"],
       "@/public/*": ["./public/*"],
       "@/components/*": ["./src/components/*"],
+      "@/controllers/*": ["./src/controllers/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

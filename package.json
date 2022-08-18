@@ -42,6 +42,7 @@
     "@mantine/prism": "5.1.5",
     "@mantine/rte": "5.1.5",
     "@mantine/spotlight": "5.1.5",
+    "axios": "0.27.2",
     "chart.js": "3.9.1",
     "dayjs": "1.11.5",
     "embla-carousel-react": "7.0.0",
