@@ -12,7 +12,13 @@ export const chartDataConfig = (
   label: string,
 ): IchartData => {
   const data = {
-    labels: [`Critical`, `Adequate`, `Moderate`, `Neritorious`, `Outstanding`],
+    labels: [
+      `Critical (0-45)`,
+      `Adequate (45-55)`,
+      `Moderate (55-65)`,
+      `Neritorious (65-80)`,
+      `Outstanding (80-100)`,
+    ],
     datasets: [
       {
         label: label,
