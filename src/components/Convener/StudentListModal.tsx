@@ -95,7 +95,7 @@ export const StudentsModal: React.FC<StudentsModalProps> = ({
             </Button>
             <Button
               variant="ghost"
-              onClick={() => exportToCsv(students, chartLabel)}
+              onClick={() => exportToCsv(students, chartLabel, chartRanking)}
             >
               Download
             </Button>

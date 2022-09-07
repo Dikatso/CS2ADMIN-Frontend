@@ -77,6 +77,7 @@ const objectToCsv = function (data) {
 export const exportToCsv = (
   studentData: studentData[],
   assessmentType: string,
+  ranking: string,
 ) => {
   const students = studentData.map((student) => {
     return {
@@ -90,7 +91,7 @@ export const exportToCsv = (
   const CsvString = `data:application/csv,` + encodeURIComponent(csvData);
   const x = document.createElement(`A`);
   x.setAttribute(`href`, CsvString);
-  x.setAttribute(`download`, `somedata.csv`);
+  x.setAttribute(`download`, `${ranking}-${assessmentType}.csv`);
   document.body.appendChild(x);
   x.click();
 };
