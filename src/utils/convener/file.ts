@@ -17,7 +17,9 @@ export const csvToArray = (str, delimiter = `,`) => {
   return arr;
 };
 
-export const extractDataIntoArray = (file: File[]): Array<studentData> => {
+export const extractDataIntoArray = async (
+  file: File[],
+): Promise<studentData[]> => {
   const reader = new FileReader();
   const students: Array<studentData> = [];
 
@@ -32,7 +34,7 @@ export const extractDataIntoArray = (file: File[]): Array<studentData> => {
     while (i < len) {
       const line = JSON.parse(JSON.stringify(data[i]));
       const student: studentData = {
-        studentNumber: line.studentNumber,
+        studentNumber: line.StudentNumber,
         assignment1: line.A1,
         assignment2: line.A2,
         assignment3: line.A3,
@@ -41,8 +43,8 @@ export const extractDataIntoArray = (file: File[]): Array<studentData> => {
         assignment6: line.A6,
         test1: line.T1,
         test2: line.T2,
-        final1016: line.asgAvg1016,
-        assignmentAverage1016: line.final1016,
+        final1016: line.final1016,
+        assignmentAverage1016: line.asgAvg1016,
         testAverage1016: line.testAvg1016,
       };
       students.push(student);
@@ -52,4 +54,44 @@ export const extractDataIntoArray = (file: File[]): Array<studentData> => {
   reader.readAsText(file[0]);
 
   return students;
+};
+
+const objectToCsv = function (data) {
+  const csvRows = [];
+  const headers = Object.keys(data[0]);
+
+  csvRows.push(headers.join(`,`));
+
+  for (const row of data) {
+    const values = headers.map((header) => {
+      const val = row[header];
+      return `${val}`;
+    });
+
+    csvRows.push(values.join(`,`));
+  }
+
+  return csvRows.join(`\n`);
+};
+
+export const exportToCsv = (
+  studentData: studentData[],
+  assessmentType: string,
+  ranking: string,
+) => {
+  const students = studentData.map((student) => {
+    return {
+      'Student Number': student.studentNumber,
+      [`${assessmentType} Grade`]: student[assessmentType],
+    };
+  });
+
+  const csvData = objectToCsv(students);
+
+  const CsvString = `data:application/csv,` + encodeURIComponent(csvData);
+  const x = document.createElement(`A`);
+  x.setAttribute(`href`, CsvString);
+  x.setAttribute(`download`, `${ranking}-${assessmentType}.csv`);
+  document.body.appendChild(x);
+  x.click();
 };

@@ -1,7 +1,6 @@
 import { MouseEvent } from 'react';
 
 export interface studentData {
-  [x: string]: number;
   studentNumber: number;
   assignment1: number;
   assignment2: number;
@@ -37,4 +36,25 @@ export interface DoughnutChartLayoutProps {
 
 export interface FileDropZoneProps {
   setStudents: (students: studentData[]) => void;
+}
+
+export interface IchartData {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    backgroundColor: string[];
+    borderColor: string[];
+    borderWidth: number;
+    spacing: number;
+    hoverOffset: number;
+    weight: number;
+  }[];
+}
+
+export interface chartCtx {
+  chartLabel: string;
+  chartRanking: string;
+  rankingCount: number;
+  rankings: any;
 }
