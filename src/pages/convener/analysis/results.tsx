@@ -63,7 +63,7 @@ const AnalysisResults: NextPage = () => {
     if (!element.length || !dataset.length) return;
 
     const chartLabel = chartData.datasets[dataset[0].datasetIndex].label;
-    const chartRanking = chartData.labels[element[0].index];
+    const chartRanking = chartData.labels[element[0].index].split(` `)[0];
     const rankingCount =
       chartData.datasets[element[0].datasetIndex].data[element[0].index];
 
