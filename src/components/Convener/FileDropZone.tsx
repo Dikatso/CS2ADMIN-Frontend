@@ -41,8 +41,8 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({ setStudents }) => {
     <div className={classes.wrapper}>
       <Dropzone
         openRef={openRef}
-        onDrop={(file) => {
-          const students = extractDataIntoArray(file);
+        onDrop={async (file) => {
+          const students = await extractDataIntoArray(file);
           setStudents(students);
           router.push(`/convener/analysis/results`);
         }}
