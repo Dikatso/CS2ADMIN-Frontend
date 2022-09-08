@@ -1,5 +1,7 @@
 import { StudentHeader } from '@/components/Student/studentform';
 import { StudentPageHeader } from '@/components/Student/Header';
+import * as React from 'react';
+import { DateRangePicker, DateRangePickerValue } from '@mantine/dates';
 
 import {
   Button,
@@ -10,7 +12,7 @@ import {
   Input,
   Select,
 } from '@chakra-ui/react';
-import { FileInput } from '@mantine/core';
+import { FileInput, Textarea } from '@mantine/core';
 import { useState } from 'react';
 import { IconUpload } from '@tabler/icons';
 
@@ -56,10 +58,10 @@ const StudentPage = () => {
                 placeholder="Medical certificate .pdf or .jpeg"
               />
 
-              <FormLabel>Extension Duration</FormLabel>
-              <Input type="string" />
-              <FormLabel>Additional information:</FormLabel>
-              <Input type="string" />
+              <Textarea
+                placeholder="Type here"
+                label="Additional information"
+              />
             </>
           ) : (
             <></>
@@ -72,18 +74,22 @@ const StudentPage = () => {
                 placeholder="Medical certificate .pdf or .jpeg"
                 icon={<IconUpload size={14} />}
               />
-              <FormLabel>Extension Duration</FormLabel>
-              <Input type="string" />
-              <FormLabel>Additional information:</FormLabel>
-              <Input type="string" />
+
+              <DateRangePicker
+                label="Extension duration"
+                placeholder="Pick dates range"
+              />
+              <Textarea
+                placeholder="type here"
+                label="Additional information"
+              />
             </>
           ) : (
             <></>
           )}
           {option === `general` ? (
             <>
-              <FormLabel>Query:</FormLabel>
-              <Input type="string" />
+              <Textarea placeholder="type here" label="Query:" />
             </>
           ) : (
             <></>
