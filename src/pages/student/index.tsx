@@ -4,9 +4,28 @@ import { Box, Center, Text } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
+import { useAuth } from '@/auth/Auth';
 
-const Convener: NextPage = () => {
+const Student: NextPage = () => {
   const router = useRouter();
+
+  const { isAuthenticated, getCurrentUser } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      const {
+        user: { role },
+      } = getCurrentUser();
+      role == `Convener`
+        ? router.push(`/convener`)
+        : () => {
+            console.log();
+          };
+    } else {
+      router.push(`/`);
+    }
+  }, []);
 
   return (
     <Box bg="white">
@@ -79,4 +98,4 @@ const Convener: NextPage = () => {
   );
 };
 
-export default Convener;
+export default Student;

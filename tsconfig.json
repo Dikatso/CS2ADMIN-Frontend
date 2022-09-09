@@ -20,6 +20,7 @@
       "@/public/*": ["./public/*"],
       "@/components/*": ["./src/components/*"],
       "@/hooks/*": ["./src/hooks/*"],
+      "@/auth/*": ["./src/auth/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],

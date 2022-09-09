@@ -1,12 +1,31 @@
+import { useAuth } from '@/auth/Auth';
 import { ConvenerPageHeader } from '@/components/Convener/Header';
 import { Footer } from '@/components/Shared/Footer';
 import { Box, Center, Text } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 const Convener: NextPage = () => {
   const router = useRouter();
+
+  const { isAuthenticated, getCurrentUser } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      const {
+        user: { role },
+      } = getCurrentUser();
+      role == `Student`
+        ? router.push(`/student`)
+        : () => {
+            console.log();
+          };
+    } else {
+      router.push(`/`);
+    }
+  }, []);
 
   return (
     <Box bg="white">
