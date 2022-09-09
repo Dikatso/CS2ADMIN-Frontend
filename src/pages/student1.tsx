@@ -1,13 +1,11 @@
-import { StudentHeader } from '@/components/Student/studentform';
 import { StudentPageHeader } from '@/components/Student/Header';
 import * as React from 'react';
-import { DateRangePicker, DateRangePickerValue } from '@mantine/dates';
+import { DateRangePicker } from '@mantine/dates';
 
 import {
   Button,
   Center,
   FormControl,
-  FormHelperText,
   FormLabel,
   Input,
   Select,
@@ -15,10 +13,30 @@ import {
 import { FileInput, Textarea } from '@mantine/core';
 import { useState } from 'react';
 import { IconUpload } from '@tabler/icons';
+import { useRouter } from 'next/router';
+import { useAuth } from '@/auth/Auth';
 
 const StudentPage = () => {
   const [option, setValue] = useState(``);
   const handleChange = (event) => setValue(event.nativeEvent.target.value);
+  const router = useRouter();
+
+  const { isAuthenticated, getCurrentUser } = useAuth();
+
+  React.useEffect(() => {
+    if (isAuthenticated()) {
+      const {
+        user: { role },
+      } = getCurrentUser();
+      role == `Convener`
+        ? router.push(`/convener`)
+        : () => {
+            console.log();
+          };
+    } else {
+      router.push(`/`);
+    }
+  }, []);
 
   return (
     <>

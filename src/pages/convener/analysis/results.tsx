@@ -29,6 +29,7 @@ import { useChartData } from '@/hooks/chartData';
 import { useChartRefs } from '@/hooks/chartRefs';
 import { StudentsModal } from '@/components/Convener/StudentListModal';
 import { DoughnutChartLayout } from '@/components/Convener/ChartLayout';
+import { useAuth } from '@/auth/Auth';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -42,9 +43,30 @@ const AnalysisResults: NextPage = () => {
   const [currentChartCtx, setCurrentChartCtx] = useState<chartCtx>({});
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const { isAuthenticated, getCurrentUser } = useAuth();
+
   useEffect(() => {
-    if (students.length == 0) {
-      router.push(`/convener`);
+    if (isAuthenticated()) {
+      const {
+        user: { role },
+      } = getCurrentUser();
+      role == `Student`
+        ? router.push(`/student`)
+        : () => {
+            console.log();
+          };
+    } else {
+      router.push(`/`);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      if (students.length == 0) {
+        router.push(`/convener`);
+      }
+    } else {
+      router.push(`/`);
     }
   }, [students]);
 
@@ -313,12 +335,5 @@ const AnalysisResults: NextPage = () => {
     );
   }
 };
-
-// Allows the page to be hydrated
-export async function getServerSideProps(context) {
-  return {
-    props: {}, // will be passed to the page component as props
-  };
-}
 
 export default AnalysisResults;

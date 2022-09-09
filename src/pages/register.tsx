@@ -3,19 +3,19 @@ import {
   createStyles,
   TextInput,
   PasswordInput,
-  Checkbox,
   Button,
   Title,
   Text,
   Anchor,
 } from '@mantine/core';
-import { Select, Stack } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { Select, Stack, useToast } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useMutation, useQuery, useQueryClient } from 'react-query';
+import { useMutation } from 'react-query';
+import { useAuth } from '@/auth/Auth';
+import { useRouter } from 'next/router';
 
-interface userDto {
+interface signUpUserDto {
   name: string;
   surname: string;
   email: string;
@@ -59,9 +59,42 @@ const useStyles = createStyles((theme) => ({
 }));
 
 function Register() {
-  const { classes } = useStyles();
+  /**
+   * Mutations or Post request
+   * - For creating records in the database
+   */
+  const signUpUserMutation = useMutation((user: signUpUserDto) => {
+    return axios.post(`http://127.0.0.1:8000/apis/auth/sign-up`, user);
+  });
+
+  const toast = useToast();
   const router = useRouter();
-  const queryClient = useQueryClient();
+
+  const { isAuthenticated, getCurrentUser } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated()) {
+      const {
+        user: { role },
+      } = getCurrentUser();
+      router.push(`${role.toLowerCase()}`);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (signUpUserMutation.isSuccess) {
+      router.push(`login`);
+      toast({
+        title: `Account created.`,
+        description: `We've created your account for you.`,
+        status: `success`,
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }, [signUpUserMutation.isSuccess]);
+
+  const { classes } = useStyles();
 
   const [Name, setName] = useState(``);
   const [Surname, setSurname] = useState(``);
@@ -71,14 +104,6 @@ function Register() {
 
   const [value, setValue] = useState(`Student`);
   const handleChange = (e) => setValue(e.target.value);
-
-  /**
-   * Mutations or Post request
-   * - For creating records in the database
-   */
-  const mutation = useMutation((user: userDto) => {
-    return axios.post(`http://127.0.0.1:8000/apis/auth/sign-up`, user);
-  });
 
   return (
     <div className={classes.wrapper}>
@@ -140,16 +165,18 @@ function Register() {
         <Stack spacing={4}>
           <div style={{ display: `flex`, justifyContent: `space-between` }} />
           <Select onChange={handleChange} variant="outline">
-            <option value="Student"> Student</option>
-            <option value="Course Convenor"> Course Convenor</option>
+            <option value="Student">Student</option>
+            <option value="Convener">Convener</option>
           </Select>
         </Stack>
         <Button
           fullWidth
           mt="xl"
           size="md"
+          loading={signUpUserMutation.isLoading}
           onClick={() => {
-            mutation.mutate({
+            console.log(value);
+            signUpUserMutation.mutate({
               name: Name,
               surname: Surname,
               email: Email,
@@ -157,7 +184,6 @@ function Register() {
               password: Password,
               role: value,
             });
-            router.push(`login`);
           }}
         >
           Register

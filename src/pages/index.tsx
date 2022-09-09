@@ -4,10 +4,12 @@ import { Footer } from '@/components/Shared/Footer';
 import { LandingPageContainer } from '@/components/LandingPage/Container';
 import Image from 'next/image';
 import { useState } from 'react';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 
 export default function Home() {
   const [state, setState] = useState(true);
+
+  const router = useRouter();
 
   return (
     <>

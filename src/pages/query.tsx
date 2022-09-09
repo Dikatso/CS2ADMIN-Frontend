@@ -2,9 +2,8 @@ import { Box, Button, Input } from '@chakra-ui/react';
 import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useState } from 'react';
-import { NextPage } from 'next';
 
-interface userDto {
+interface registerUserDto {
   name: string;
   email: string;
   password: string;
@@ -30,7 +29,7 @@ const ReactQueryExample = () => {
    * - For creating records in the database
    */
   const mutation = useMutation(
-    (user: userDto) => {
+    (user: registerUserDto) => {
       return axios.post(`http://127.0.0.1:8000/apis/auth/sign-up`, user);
     },
     {

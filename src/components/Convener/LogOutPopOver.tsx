@@ -7,13 +7,26 @@ import {
   PopoverBody,
   Center,
 } from '@chakra-ui/react';
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { MdArrowDropDownCircle } from 'react-icons/md';
 import { FiLogOut } from 'react-icons/fi';
-import { Button } from '@chakra-ui/button';
+import { Button, Box } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
+import { useAuth } from '@/auth/Auth';
+import { signInUserResponse } from '@/pages/login';
 
-export const LogOutPopOver: React.FC = () => {
+type userData = signInUserResponse;
+
+export const LogOutPopOver: FC = () => {
   const initialFocusRef = React.useRef();
+  const [userData, setUserData] = useState<userData>({});
+  const router = useRouter();
+  const { logout, getCurrentUser } = useAuth();
+
+  useEffect(() => {
+    const userData = getCurrentUser();
+    setUserData(userData);
+  }, []);
 
   return (
     <Popover
@@ -29,8 +42,21 @@ export const LogOutPopOver: React.FC = () => {
       <PopoverContent color="white" bg="#F1F6F9" width="150px">
         <PopoverArrow bg="#F1F6F9" />
         <PopoverBody>
-          <Center mt="2px">
-            <Button size="sm" colorScheme="red" variant="solid">
+          <Center mt="2px" display="flex" flexDirection="column">
+            <Box color="black">
+              <Text>Logged in as {userData.user?.role}</Text>
+              <Text>Email: {userData.user?.email}</Text>
+              <Text>UctId: {userData.user?.uctId}</Text>
+            </Box>
+            <Button
+              size="sm"
+              colorScheme="red"
+              variant="solid"
+              onClick={() => {
+                logout();
+                router.push(`/`);
+              }}
+            >
               <Text
                 colorScheme="blue"
                 ref={initialFocusRef}
