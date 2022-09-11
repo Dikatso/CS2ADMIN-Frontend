@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   createStyles,
   Table,
@@ -16,6 +16,11 @@ import {
   IconChevronUp,
   IconSearch,
 } from '@tabler/icons';
+import { StudentEnquiryModal } from '../Shared/ViewEnquiryModal';
+import { Enquiry } from '@/types/convener';
+import { useDisclosure } from '@chakra-ui/react';
+import { StatusBadge } from '../Shared/StatusBadge';
+import moment from 'moment';
 
 const useStyles = createStyles((theme) => ({
   th: {
@@ -41,19 +46,12 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface RowData {
-  id?: string;
-  course?: string;
-  assignNo?: string;
-  testNo?: string;
-  submitDate?: string;
-  updateDate?: string;
-  status?: string;
-}
+type RowData = Enquiry;
 
 interface TableSortProps {
   data: RowData[];
   tableType: 'test' | 'assignment';
+  view: 'student' | 'convener';
 }
 
 interface ThProps {
@@ -88,9 +86,13 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
 
 function filterData(data: RowData[], search: string) {
   const query = search.toLowerCase().trim();
-  return data.filter((item) =>
-    keys(data[0]).some((key) => item[key].toLowerCase().includes(query)),
-  );
+  return data.filter((item) => {
+    return keys(data[0]).some((key) => {
+      if (item[key] != null && key != `user`) {
+        return item[key].toLowerCase().includes(query);
+      }
+    });
+  });
 }
 
 function sortData(
@@ -106,20 +108,31 @@ function sortData(
   return filterData(
     [...data].sort((a, b) => {
       if (payload.reversed) {
-        return b[sortBy].localeCompare(a[sortBy]);
+        if (sortBy != `user`) {
+          return b[sortBy].localeCompare(a[sortBy]);
+        }
       }
 
-      return a[sortBy].localeCompare(b[sortBy]);
+      if (sortBy != `user`) {
+        return a[sortBy].localeCompare(b[sortBy]);
+      }
     }),
     payload.search,
   );
 }
 
-export function TableSort({ data, tableType }: TableSortProps) {
+export function TableSort({ data, tableType, view }: TableSortProps) {
+  // update sorted data after invalidating fetchEnquiries
+  useEffect(() => {
+    setSortedData(data);
+  }, [data]);
+
   const [search, setSearch] = useState(``);
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
   const [reverseSortDirection, setReverseSortDirection] = useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry>();
 
   const setSorting = (field: keyof RowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
@@ -136,22 +149,35 @@ export function TableSort({ data, tableType }: TableSortProps) {
     );
   };
 
-  const rows = sortedData.map((row) => (
-    <tr
-      key={row.id}
-      onClick={() => alert(`showing student ${row.id}`)}
-      style={{
-        cursor: `pointer`,
-      }}
-    >
-      <td>{row.id}</td>
-      <td>{row.course}</td>
-      {tableType == `test` ? <td>{row.testNo}</td> : <td>{row.assignNo}</td>}
-      <td>{row.submitDate}</td>
-      <td>{row.updateDate}</td>
-      <td>{row.status}</td>
-    </tr>
-  ));
+  const rows = sortedData.map((row) => {
+    return (
+      <>
+        <tr
+          key={row.id}
+          onClick={() => {
+            onOpen();
+            setSelectedEnquiry(row);
+          }}
+          style={{
+            cursor: `pointer`,
+          }}
+        >
+          <td>{row.id}</td>
+          <td>{row.courseCode}</td>
+          {tableType == `test` ? (
+            <td>{row.testNo}</td>
+          ) : (
+            <td>{row.assignmentNo}</td>
+          )}
+          <td>{moment(row.createdAt).format(`lll`)}</td>
+          <td>{moment(row.updatedAt).format(`lll`)}</td>
+          <td>
+            <StatusBadge enquiryStatus={row.status} size="md" />
+          </td>
+        </tr>
+      </>
+    );
+  });
 
   return (
     <ScrollArea>
@@ -166,6 +192,7 @@ export function TableSort({ data, tableType }: TableSortProps) {
         horizontalSpacing="md"
         verticalSpacing="xs"
         sx={{ tableLayout: `fixed`, minWidth: 700 }}
+        highlightOnHover
       >
         <thead>
           <tr>
@@ -177,17 +204,19 @@ export function TableSort({ data, tableType }: TableSortProps) {
               ID
             </Th>
             <Th
-              sorted={sortBy === `course`}
+              sorted={sortBy === `courseCode`}
               reversed={reverseSortDirection}
-              onSort={() => setSorting(`course`)}
+              onSort={() => setSorting(`courseCode`)}
             >
               Course
             </Th>
             <Th
-              sorted={sortBy === (tableType === `test` ? `testNo` : `assignNo`)}
+              sorted={
+                sortBy === (tableType === `test` ? `testNo` : `assignmentNo`)
+              }
               reversed={reverseSortDirection}
               onSort={() => {
-                const value = tableType === `test` ? `testNo` : `assignNo`;
+                const value = tableType === `test` ? `testNo` : `assignmentNo`;
                 setSorting(value);
               }}
             >
@@ -195,17 +224,17 @@ export function TableSort({ data, tableType }: TableSortProps) {
             </Th>
 
             <Th
-              sorted={sortBy === `submitDate`}
+              sorted={sortBy === `createdAt`}
               reversed={reverseSortDirection}
-              onSort={() => setSorting(`submitDate`)}
+              onSort={() => setSorting(`createdAt`)}
             >
               Date Submitted
             </Th>
 
             <Th
-              sorted={sortBy === `updateDate`}
+              sorted={sortBy === `updatedAt`}
               reversed={reverseSortDirection}
-              onSort={() => setSorting(`updateDate`)}
+              onSort={() => setSorting(`updatedAt`)}
             >
               Date Updated
             </Th>
@@ -224,7 +253,7 @@ export function TableSort({ data, tableType }: TableSortProps) {
             rows
           ) : (
             <tr>
-              <td colSpan={Object.keys(data[0]).length}>
+              <td colSpan={6}>
                 <Text weight={500} align="center">
                   Nothing found
                 </Text>
@@ -233,6 +262,16 @@ export function TableSort({ data, tableType }: TableSortProps) {
           )}
         </tbody>
       </Table>
+      {selectedEnquiry != null ? (
+        <StudentEnquiryModal
+          enquiry={selectedEnquiry}
+          isOpen={isOpen}
+          onClose={onClose}
+          view={view}
+        />
+      ) : (
+        <></>
+      )}
     </ScrollArea>
   );
 }
