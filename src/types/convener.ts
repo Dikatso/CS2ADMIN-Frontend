@@ -58,3 +58,33 @@ export interface chartCtx {
   rankingCount: number;
   rankings: any;
 }
+
+export interface Enquiry {
+  assignmentNo: string;
+  attatchmentLink: string;
+  courseCode: string;
+  createdAt: string;
+  extensionDuration: string;
+  id: string;
+  status: string;
+  testNo: string;
+  title: string;
+  type: string;
+  updatedAt: string;
+  userId: string;
+  messageFromStudent: string;
+  messageFromConvener: string;
+  user: User;
+}
+
+export interface User {
+  id: string;
+  uctId: string;
+  name: string;
+  email: string;
+  password: string;
+  createdAt: string;
+  updatedAt: string;
+  role: string;
+  Enquiries: [] | null;
+}
