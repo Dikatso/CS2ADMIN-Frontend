@@ -11,6 +11,8 @@
     "react/no-unused-prop-types": "off",
     "react/require-default-props": "off",
     "react-hooks/exhaustive-deps": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "react-hooks/rules-of-hooks": "off",
     "import/extensions": [
       "error",
       "ignorePackages",
