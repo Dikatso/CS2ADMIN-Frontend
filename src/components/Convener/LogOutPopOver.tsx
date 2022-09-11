@@ -44,9 +44,9 @@ export const LogOutPopOver: FC = () => {
         <PopoverBody>
           <Center mt="2px" display="flex" flexDirection="column">
             <Box color="black">
-              <Text>Logged in as {userData.user?.role}</Text>
-              <Text>Email: {userData.user?.email}</Text>
-              <Text>UctId: {userData.user?.uctId}</Text>
+              <Text>Logged in as {userData?.user?.role}</Text>
+              <Text>Email: {userData?.user?.email}</Text>
+              <Text>UctId: {userData?.user?.uctId}</Text>
             </Box>
             <Button
               size="sm"

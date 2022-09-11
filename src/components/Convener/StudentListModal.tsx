@@ -46,7 +46,12 @@ export const StudentsModal: React.FC<StudentsModalProps> = ({
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size="md">
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size="md"
+        scrollBehavior={`inside`}
+      >
         <ModalOverlay
           bg="blackAlpha.300"
           backdropFilter="blur(10px) hue-rotate(20deg)"
