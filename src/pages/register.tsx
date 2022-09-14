@@ -63,9 +63,22 @@ function Register() {
    * Mutations or Post request
    * - For creating records in the database
    */
-  const signUpUserMutation = useMutation((user: signUpUserDto) => {
-    return axios.post(`http://127.0.0.1:8000/apis/auth/sign-up`, user);
-  });
+  const { mutate, isLoading, isError, isSuccess, error } = useMutation(
+    (user: signUpUserDto) => {
+      return axios.post(`http://127.0.0.1:8000/apis/auth/sign-up`, user);
+    },
+  );
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        description: `${error.response.data.detail}`,
+        status: `error`,
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+  }, [isError]);
 
   const toast = useToast();
   const router = useRouter();
@@ -82,7 +95,7 @@ function Register() {
   }, []);
 
   useEffect(() => {
-    if (signUpUserMutation.isSuccess) {
+    if (isSuccess) {
       router.push(`login`);
       toast({
         title: `Account created.`,
@@ -92,7 +105,18 @@ function Register() {
         isClosable: true,
       });
     }
-  }, [signUpUserMutation.isSuccess]);
+  }, [isSuccess]);
+
+  const onClick = () => {
+    mutate({
+      name: Name,
+      surname: Surname,
+      email: Email,
+      uctId: UCTId,
+      password: Password,
+      role: value,
+    });
+  };
 
   const { classes } = useStyles();
 
@@ -173,18 +197,8 @@ function Register() {
           fullWidth
           mt="xl"
           size="md"
-          loading={signUpUserMutation.isLoading}
-          onClick={() => {
-            console.log(value);
-            signUpUserMutation.mutate({
-              name: Name,
-              surname: Surname,
-              email: Email,
-              uctId: UCTId,
-              password: Password,
-              role: value,
-            });
-          }}
+          loading={isLoading}
+          onClick={onClick}
         >
           Register
         </Button>

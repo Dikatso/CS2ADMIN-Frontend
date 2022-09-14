@@ -75,15 +75,28 @@ function Login() {
    * Mutations or Post request
    * - For creating records in the database
    */
-  const signInUserMutation = useMutation((user: signInUserDto) => {
-    return axios.post<signInUserResponse>(
-      `http://127.0.0.1:8000/apis/auth/sign-in`,
-      user,
-    );
-  });
+  const { mutate, data, isError, error, isLoading, isSuccess } = useMutation(
+    (user: signInUserDto) => {
+      return axios.post<signInUserResponse>(
+        `http://127.0.0.1:8000/apis/auth/sign-in`,
+        user,
+      );
+    },
+  );
+
+  useEffect(() => {
+    if (isError) {
+      toast({
+        description: `${error.response.data.detail}`,
+        status: `error`,
+        duration: 2000,
+        isClosable: true,
+      });
+    }
+  }, [isError]);
 
   const onClick = () => {
-    signInUserMutation.mutate({
+    mutate({
       email: Email,
       password: Password,
     });
@@ -103,27 +116,24 @@ function Login() {
   }, []);
 
   useEffect(() => {
-    if (signInUserMutation.isSuccess) {
-      if (signInUserMutation.data.data.token) {
-        localStorage.setItem(
-          `cs2-auth`,
-          JSON.stringify(signInUserMutation.data.data),
-        );
+    if (isSuccess) {
+      if (data.data.token) {
+        localStorage.setItem(`cs2-auth`, JSON.stringify(data.data));
         toast({
           title: `Logged in`,
           status: `success`,
           duration: 3000,
           isClosable: true,
         });
-        const role = signInUserMutation.data.data.user.role;
+        const role = data.data.user.role;
         role == `Student` ? router.push(`/student`) : router.push(`/convener`);
       }
     }
-  }, [signInUserMutation.isSuccess]);
+  }, [isSuccess]);
 
   return (
     <>
-      <Box h="900px">
+      <Box>
         <div className={classes.wrapper}>
           <Paper className={classes.form} radius={0} p={30}>
             <Title
@@ -156,7 +166,7 @@ function Login() {
               mt="xl"
               size="md"
               onClick={onClick}
-              loading={signInUserMutation.isLoading}
+              loading={isLoading}
             >
               Login
             </Button>
