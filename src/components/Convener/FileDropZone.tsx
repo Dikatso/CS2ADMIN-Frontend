@@ -1,5 +1,8 @@
 import { FileDropZoneProps } from '@/types/convener';
-import { extractDataIntoArray } from '@/utils/convener/file';
+import {
+  extractDataIntoArray,
+  extractDataIntoArray2,
+} from '@/utils/convener/file';
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import { useRouter } from 'next/router';
 import { IconCloudUpload, IconX, IconDownload } from '@tabler/icons';
@@ -32,7 +35,10 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export const FileDropZone: React.FC<FileDropZoneProps> = ({ setStudents }) => {
+export const FileDropZone: React.FC<FileDropZoneProps> = ({
+  setStudents,
+  setStrugglingStudent,
+}) => {
   const { classes, theme } = useStyles();
   const openRef = useRef<() => void>(null);
   const router = useRouter();
@@ -43,7 +49,9 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({ setStudents }) => {
         openRef={openRef}
         onDrop={async (file) => {
           const students = await extractDataIntoArray(file);
+          const strugglingStudents = await extractDataIntoArray2(file);
           setStudents(students);
+          setStrugglingStudent(students);
           router.push(`/convener/analysis/results`);
         }}
         className={classes.dropzone}

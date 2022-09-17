@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { useAuth } from '@/auth/Auth';
 
 const ConvenerAnalysis: NextPage = () => {
-  const { setStudents } = useStudentStore();
+  const { setStudents, setStrugglingStudents } = useStudentStore();
 
   const router = useRouter();
 
@@ -42,7 +42,10 @@ const ConvenerAnalysis: NextPage = () => {
         mt={40}
         bg="white"
       >
-        <FileDropZone setStudents={setStudents} />
+        <FileDropZone
+          setStudents={setStudents}
+          setStrugglingStudent={setStrugglingStudents}
+        />
       </Box>
       <Footer />
     </Box>

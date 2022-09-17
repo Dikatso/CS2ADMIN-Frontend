@@ -15,6 +15,13 @@ export interface studentData {
   testAverage1016: number;
 }
 
+export interface strugglingStudentData {
+  studentNumber: number;
+  assignment1: number;
+  assignment2: number;
+  test1: number;
+}
+
 export interface DoughnutChartLayoutProps {
   chartTitle: string;
   chartOnClick: (event: MouseEvent<HTMLCanvasElement>) => void;
@@ -36,6 +43,7 @@ export interface DoughnutChartLayoutProps {
 
 export interface FileDropZoneProps {
   setStudents: (students: studentData[]) => void;
+  setStrugglingStudent: (strugglingStudent: strugglingStudentData[]) => void;
 }
 
 export interface IchartData {

@@ -30,6 +30,7 @@ import { useChartRefs } from '@/hooks/chartRefs';
 import { StudentsModal } from '@/components/Convener/StudentListModal';
 import { DoughnutChartLayout } from '@/components/Convener/ChartLayout';
 import { useAuth } from '@/auth/Auth';
+import { exportToCsv2 } from '@/utils/convener/file';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -39,7 +40,7 @@ const AnalysisResults: NextPage = () => {
   const assessments = useAssessments();
   const chartData = useChartData();
 
-  const { students } = useStudentStore();
+  const { students, strugglingStudents } = useStudentStore();
   const [currentChartCtx, setCurrentChartCtx] = useState<chartCtx>({});
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -116,7 +117,6 @@ const AnalysisResults: NextPage = () => {
 
     const dataset = getDatasetAtEvent(chart, event);
     const element = getElementAtEvent(chart, event);
-
     if (dataset.length == 0 || element.length == 0) {
       return;
     } else {
@@ -164,6 +164,14 @@ const AnalysisResults: NextPage = () => {
               </Tab>
               <Tab>
                 <Text fontSize="lg">CSC1016</Text>
+              </Tab>
+              <Tab>
+                <Text
+                  onClick={() => exportToCsv2(strugglingStudents)}
+                  fontSize="lg"
+                >
+                  Download Struggling Students
+                </Text>
               </Tab>
             </TabList>
 
@@ -284,6 +292,7 @@ const AnalysisResults: NextPage = () => {
                 </Grid>
               </TabPanel>
 
+              {/*  CSC1016 */}
               <TabPanel display="flex" flexDirection="row" bg="white" mt={2}>
                 <Grid
                   templateRows="repeat(1, 1fr)"
@@ -327,6 +336,10 @@ const AnalysisResults: NextPage = () => {
                     chartData={chartData.testAverage1016ChartData}
                   />
                 </Grid>
+              </TabPanel>
+
+              <TabPanel>
+                {/* onClick={() => exportToCsv2(strugglingStudents)} */}
               </TabPanel>
             </TabPanels>
           </Tabs>
