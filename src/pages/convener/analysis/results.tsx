@@ -119,7 +119,6 @@ const AnalysisResults: NextPage = () => {
 
     const dataset = getDatasetAtEvent(chart, event);
     const element = getElementAtEvent(chart, event);
-
     if (dataset.length == 0 || element.length == 0) {
       return;
     } else {
