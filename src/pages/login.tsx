@@ -87,7 +87,7 @@ function Login() {
   useEffect(() => {
     if (isError) {
       toast({
-        description: `${error.response.data.detail}`,
+        description: `${error.response.data?.detail}`,
         status: `error`,
         duration: 2000,
         isClosable: true,

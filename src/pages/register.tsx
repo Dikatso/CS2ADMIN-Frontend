@@ -59,6 +59,11 @@ const useStyles = createStyles((theme) => ({
 }));
 
 function Register() {
+  const toast = useToast();
+  const router = useRouter();
+
+  const { isAuthenticated, getCurrentUser } = useAuth();
+
   /**
    * Mutations or Post request
    * - For creating records in the database
@@ -72,18 +77,13 @@ function Register() {
   useEffect(() => {
     if (isError) {
       toast({
-        description: `${error.response.data.detail}`,
+        description: `${error.response.data?.detail}`,
         status: `error`,
         duration: 2000,
         isClosable: true,
       });
     }
   }, [isError]);
-
-  const toast = useToast();
-  const router = useRouter();
-
-  const { isAuthenticated, getCurrentUser } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated()) {
