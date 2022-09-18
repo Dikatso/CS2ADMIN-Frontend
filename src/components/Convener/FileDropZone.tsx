@@ -1,5 +1,6 @@
 import { FileDropZoneProps } from '@/types/convener';
 import {
+  extractDataIntoArray2,
   extractStudentDataIntoArray,
   extractStudentTutorAllocationDataIntoArray,
 } from '@/utils/convener/file';
@@ -40,6 +41,7 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
   setStudents,
   dropType,
   setStudentTutorAllocation,
+  setStrugglingStudents,
 }) => {
   const { classes, theme } = useStyles();
   const openRef = useRef<() => void>(null);
@@ -50,6 +52,10 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
     if (dropType == `student-analysis`) {
       const students = await extractStudentDataIntoArray(file, `sa`);
       setStudents(students);
+
+      const strugglingStudents = await extractDataIntoArray2(file);
+      setStrugglingStudents(strugglingStudents);
+
       router.push(`/convener/analysis/results`);
     } else if (dropType == `tutor-management`) {
       let listOfTutorsFile = null;

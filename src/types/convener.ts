@@ -31,6 +31,13 @@ export interface ITutorWithMarks {
   marks?: number[];
 }
 
+export interface strugglingStudentData {
+  studentNumber: number;
+  assignment1: number;
+  assignment2: number;
+  test1: number;
+}
+
 export interface IAssignmentMarksWithTutors {
   a1: ITutorWithMarks[];
   a2: ITutorWithMarks[];
@@ -62,6 +69,7 @@ export interface DoughnutChartLayoutProps {
 export interface FileDropZoneProps {
   setStudents?: (students: studentData[]) => void;
   setStudentTutorAllocation?: (studentTutorAllocation: studentTutorAllocation[]) => void;
+  setStrugglingStudents?: (strugglingStudent: strugglingStudentData[]) => void;
   dropType: 'student-analysis' | 'tutor-management'
 }
 

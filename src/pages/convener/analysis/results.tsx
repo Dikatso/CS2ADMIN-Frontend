@@ -32,6 +32,7 @@ import { useChartRefs } from '@/hooks/chartRefs';
 import { StudentsModal } from '@/components/Convener/StudentListModal';
 import { DoughnutChartLayout } from '@/components/Convener/ChartLayout';
 import { useAuth } from '@/auth/Auth';
+import { exportToCsv2 } from '@/utils/convener/file';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -41,7 +42,7 @@ const AnalysisResults: NextPage = () => {
   const assessments = useAssessments();
   const chartData = useChartData();
 
-  const { students } = useStudentStore();
+  const { students, strugglingStudents } = useStudentStore();
   const [currentChartCtx, setCurrentChartCtx] = useState<chartCtx>({});
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -172,6 +173,14 @@ const AnalysisResults: NextPage = () => {
                 </Tab>
                 <Tab>
                   <Text fontSize="lg">CSC1016</Text>
+                </Tab>
+                <Tab>
+                  <Text
+                    onClick={() => exportToCsv2(strugglingStudents)}
+                    fontSize="lg"
+                  >
+                    Download Struggling Students
+                  </Text>
                 </Tab>
               </TabList>
 
@@ -335,6 +344,9 @@ const AnalysisResults: NextPage = () => {
                       chartData={chartData.testAverage1016ChartData}
                     />
                   </Grid>
+                </TabPanel>
+                <TabPanel>
+                  {/* onClick={() => exportToCsv2(strugglingStudents)} */}
                 </TabPanel>
               </TabPanels>
             </Tabs>

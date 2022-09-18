@@ -2,19 +2,22 @@
 /* eslint-disable import/extensions */
 import create from 'zustand';
 
-import { studentData, studentTutorAllocation } from '@/types/convener';
+import { strugglingStudentData, studentData, studentTutorAllocation } from '@/types/convener';
 
 interface StudentDataState {
   students: studentData[];
   setStudents: (data: studentData[]) => void;
   studentTutorAllocation: studentTutorAllocation[];
   setStudentTutorAllocation: (data: studentTutorAllocation[]) => void;
+  strugglingStudents: strugglingStudentData[],
+  setStrugglingStudents: (students: strugglingStudentData[]) => void,
 }
 
 export const useStudentStore = create<StudentDataState>((set) => ({
   // initial state
   students: [],
   studentTutorAllocation: [],
+  strugglingStudents: [],
 
   // methods for manipulating state
   setStudents: (students: studentData[]) => {
@@ -26,5 +29,10 @@ export const useStudentStore = create<StudentDataState>((set) => ({
     set({
       studentTutorAllocation: studentTutorAllocation,
     });
-  }
+  },
+  setStrugglingStudents: (students: strugglingStudentData[]) => {
+    set({
+      strugglingStudents: students,
+    });
+  },
 }));
