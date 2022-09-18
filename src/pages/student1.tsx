@@ -1,22 +1,21 @@
 import { StudentPageHeader } from '@/components/Student/Header';
 import * as React from 'react';
-import { DateRangePicker } from '@mantine/dates';
 
 import {
-  Button,
   Center,
   FormControl,
   FormLabel,
   Input,
   Select,
+  useToast,
 } from '@chakra-ui/react';
+import { Button } from '@mantine/core';
 import { FileInput, Textarea } from '@mantine/core';
-import { useState } from 'react';
-import { IconUpload } from '@tabler/icons';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/auth/Auth';
 import { useMutation } from 'react-query';
 import axios from 'axios';
+import { useState } from 'react';
 
 interface createEnquiryDto {
   userId: string;
@@ -25,6 +24,11 @@ interface createEnquiryDto {
   assignmentNo: string;
   type: string;
   enquiryMessage: string;
+}
+
+interface fileUpload {
+  enqId: string;
+  file: File;
 }
 
 export interface createEnquiryResponse {
@@ -38,6 +42,7 @@ export interface createEnquiryResponse {
     attatchmentLink: string;
     assignmentNo: string;
     testNo: string;
+    file: fileUpload;
   };
 }
 
@@ -48,19 +53,19 @@ const StudentPage = () => {
   const { isAuthenticated, getCurrentUser } = useAuth();
   const [coursecode, setCourseCode] = useState(``);
   const [assignment, setAssignment] = useState(``);
-  const [type, setType] = useState(``);
   const [duration, setDuration] = useState(``);
   const [AdditionalInfo, setAdditionalInfo] = useState(``);
+  const [fileValue, setFileValue] = useState<File>([]);
+  const formdata = new FormData();
+  formdata.append(`fileUpload`, fileValue);
+  const toast = useToast();
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(`Course code`, coursecode);
-    console.log(`Assignment`, assignment);
-    console.log(`Type`, type);
-    console.log(`Duration`, duration);
-    console.log(handleChange);
   };
-
+  function getQueryID(data) {
+    return data.data.id.toString();
+  }
   React.useEffect(() => {
     if (isAuthenticated()) {
       const {
@@ -69,19 +74,55 @@ const StudentPage = () => {
       role == `Convener`
         ? router.push(`/convener`)
         : () => {
-            console.log();
+            console.log(`not authenticated`);
           };
     } else {
       router.push(`/`);
     }
   }, []);
 
-  const createEnquiryMutation = useMutation((enquiry: createEnquiryDto) => {
-    return axios.post<createEnquiryResponse>(
-      `http://127.0.0.1:8000/apis/enquiry/`,
-      enquiry,
-    );
+  const addFileMutation = useMutation((queryId: string) => {
+    return axios.post(`http://127.0.0.1:8000/apis/file/${queryId}`, formdata);
   });
+
+  const createEnquiryMutation = useMutation(
+    (enquiry: createEnquiryDto) => {
+      return axios.post<createEnquiryResponse>(
+        `http://127.0.0.1:8000/apis/enquiry/`,
+        enquiry,
+      );
+    },
+    {
+      onSuccess: (responseData) => {
+        const queryId = getQueryID(responseData);
+        addFileMutation.mutate(queryId);
+        toast({
+          title: `Query submitted`,
+          status: `success`,
+          duration: 3000,
+          isClosable: true,
+        });
+      },
+    },
+  );
+
+  function createQuery() {
+    const {
+      user: { id },
+    } = getCurrentUser();
+    createEnquiryMutation.mutate({
+      userId: id,
+      type: option,
+      courseCode: coursecode,
+      enquiryMessage: AdditionalInfo,
+      extensionDuration: duration,
+      assignmentNo: assignment,
+    });
+  }
+
+  React.useEffect(() => {
+    console.log(fileValue);
+  }, [fileValue]);
 
   return (
     <>
@@ -121,7 +162,9 @@ const StudentPage = () => {
               <FormLabel>Upload Medical Certificate</FormLabel>
               <FileInput
                 mt={5}
-                placeholder="Medical certificate .pdf or .jpeg"
+                value={fileValue}
+                onChange={setFileValue}
+                placeholder="Medical certificate .pdf"
               />
               {option === `AssignmentExtension` ? (
                 <>
@@ -154,28 +197,24 @@ const StudentPage = () => {
 
           {option === `general` ? (
             <>
-              <Textarea placeholder="type here" label="Query:" />
+              <Textarea
+                placeholder="type here"
+                label="Query:"
+                value={AdditionalInfo}
+                onChange={(event) => setAdditionalInfo(event.target.value)}
+              />
             </>
           ) : (
             <></>
           )}
           <Button
             onClick={() => {
-              const {
-                user: { id },
-              } = getCurrentUser();
-              createEnquiryMutation.mutate({
-                userId: id,
-                type: option,
-                courseCode: coursecode,
-                enquiryMessage: AdditionalInfo,
-                extensionDuration: duration,
-                assignmentNo: assignment,
-              });
+              createQuery();
             }}
             type="submit"
             mt={5}
-            colorScheme="teal"
+            color="teal"
+            loading={createEnquiryMutation.isLoading}
           >
             Submit
           </Button>
