@@ -1,4 +1,3 @@
-/* eslint-disable import/extensions */
 import { ConvenerPageHeader } from '@/components/Convener/Header';
 import { Footer } from '@/components/Shared/Footer';
 import { Box, Center, Text } from '@chakra-ui/react';
@@ -9,11 +8,9 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/auth/Auth';
 
-const ConvenerAnalysis: NextPage = () => {
-  const { setStudents, setStrugglingStudents } = useStudentStore();
-
+const TutorManagement: NextPage = () => {
   const router = useRouter();
-
+  const { setStudents, setStudentTutorAllocation } = useStudentStore();
   const { isAuthenticated, getCurrentUser } = useAuth();
 
   useEffect(() => {
@@ -46,13 +43,13 @@ const ConvenerAnalysis: NextPage = () => {
         <Box display="flex" flexDirection="column">
           <Center>
             <Text fontSize="5xl" fontWeight={700} mb={8}>
-              Student Analysis
+              Tutor Management
             </Text>
           </Center>
           <FileDropZone
+            dropType="tutor-management"
             setStudents={setStudents}
-            setStrugglingStudents={setStrugglingStudents}
-            dropType="student-analysis"
+            setStudentTutorAllocation={setStudentTutorAllocation}
           />
         </Box>
       </Box>
@@ -61,4 +58,4 @@ const ConvenerAnalysis: NextPage = () => {
   );
 };
 
-export default ConvenerAnalysis;
+export default TutorManagement;
