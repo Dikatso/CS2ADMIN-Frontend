@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import { ConvenerPageHeader } from '@/components/Convener/Header';
 import { useStudentStore } from '@/state/studentDataStore';
 import { chartCtx, IchartData } from '@/types/convener';
@@ -11,6 +12,7 @@ import {
   Text,
   Grid,
   Spinner,
+  Center,
   useDisclosure,
 } from '@chakra-ui/react';
 import { NextPage } from 'next';
@@ -147,189 +149,196 @@ const AnalysisResults: NextPage = () => {
           display="flex"
           justifyContent="center"
           alignItems="center"
-          mt="50px"
+          mt={5}
         >
           <StudentsModal
             isOpen={isOpen}
             onClose={onClose}
             currentChartCtx={currentChartCtx}
           />
-          <Tabs variant="soft-rounded" colorScheme="green" bg="white">
-            <TabList display="flex" justifyContent="center">
-              <Tab>
-                <Text fontSize="lg">Tests</Text>
-              </Tab>
-              <Tab>
-                <Text fontSize="lg">Assignments</Text>
-              </Tab>
-              <Tab>
-                <Text fontSize="lg">CSC1016</Text>
-              </Tab>
-            </TabList>
+          <Box display="flex" flexDirection="column">
+            <Center>
+              <Text fontSize="5xl" fontWeight={700} mb={1}>
+                Student Analysis
+              </Text>
+            </Center>
+            <Tabs variant="soft-rounded" colorScheme="green" bg="white">
+              <TabList display="flex" justifyContent="center">
+                <Tab>
+                  <Text fontSize="lg">Tests</Text>
+                </Tab>
+                <Tab>
+                  <Text fontSize="lg">Assignments</Text>
+                </Tab>
+                <Tab>
+                  <Text fontSize="lg">CSC1016</Text>
+                </Tab>
+              </TabList>
 
-            <TabPanels>
-              {/*  Tests */}
-              <TabPanel display="flex" flexDirection="row" bg="white" mt={2}>
-                <Grid
-                  templateRows="repeat(1, 1fr)"
-                  templateColumns="repeat(2, 1fr)"
-                  gap={10}
-                >
-                  <DoughnutChartLayout
-                    chartTitle="Test 1"
-                    chartOnClick={(event) =>
-                      onClick(
-                        event,
-                        chartData.test1ChartData,
-                        refs.test1ChartRef,
-                      )
-                    }
-                    chartRef={refs.test1ChartRef}
-                    chartData={chartData.test1ChartData}
-                  />
-                  <DoughnutChartLayout
-                    chartTitle="Test 2"
-                    chartOnClick={(event) =>
-                      onClick(
-                        event,
-                        chartData.test2ChartData,
-                        refs.test2ChartRef,
-                      )
-                    }
-                    chartRef={refs.test2ChartRef}
-                    chartData={chartData.test2ChartData}
-                  />
-                </Grid>
-              </TabPanel>
+              <TabPanels>
+                {/*  Tests */}
+                <TabPanel display="flex" flexDirection="row" bg="white" mt={2}>
+                  <Grid
+                    templateRows="repeat(1, 1fr)"
+                    templateColumns="repeat(2, 1fr)"
+                    gap={10}
+                  >
+                    <DoughnutChartLayout
+                      chartTitle="Test 1"
+                      chartOnClick={(event) =>
+                        onClick(
+                          event,
+                          chartData.test1ChartData,
+                          refs.test1ChartRef,
+                        )
+                      }
+                      chartRef={refs.test1ChartRef}
+                      chartData={chartData.test1ChartData}
+                    />
+                    <DoughnutChartLayout
+                      chartTitle="Test 2"
+                      chartOnClick={(event) =>
+                        onClick(
+                          event,
+                          chartData.test2ChartData,
+                          refs.test2ChartRef,
+                        )
+                      }
+                      chartRef={refs.test2ChartRef}
+                      chartData={chartData.test2ChartData}
+                    />
+                  </Grid>
+                </TabPanel>
 
-              {/*  Assignments */}
-              <TabPanel display="flex" flexDirection="row" bg="white" mt={2}>
-                <Grid
-                  templateRows="repeat(3, 1fr)"
-                  templateColumns="repeat(3, 1fr)"
-                  gap={10}
-                >
-                  <DoughnutChartLayout
-                    chartTitle="Assignment 1"
-                    chartOnClick={(event) =>
-                      onClick(
-                        event,
-                        chartData.assignment1ChartData,
-                        refs.assignment1ChartRef,
-                      )
-                    }
-                    chartRef={refs.assignment1ChartRef}
-                    chartData={chartData.assignment1ChartData}
-                  />
-                  <DoughnutChartLayout
-                    chartTitle="Assignment 2"
-                    chartOnClick={(event) =>
-                      onClick(
-                        event,
-                        chartData.assignment2ChartData,
-                        refs.assignment2ChartRef,
-                      )
-                    }
-                    chartRef={refs.assignment2ChartRef}
-                    chartData={chartData.assignment2ChartData}
-                  />
-                  <DoughnutChartLayout
-                    chartTitle="Assignment 3"
-                    chartOnClick={(event) =>
-                      onClick(
-                        event,
-                        chartData.assignment3ChartData,
-                        refs.assignment3ChartRef,
-                      )
-                    }
-                    chartRef={refs.assignment3ChartRef}
-                    chartData={chartData.assignment3ChartData}
-                  />
-                  <DoughnutChartLayout
-                    chartTitle="Assignment 4"
-                    chartOnClick={(event) =>
-                      onClick(
-                        event,
-                        chartData.assignment4ChartData,
-                        refs.assignment4ChartRef,
-                      )
-                    }
-                    chartRef={refs.assignment4ChartRef}
-                    chartData={chartData.assignment4ChartData}
-                  />
-                  <DoughnutChartLayout
-                    chartTitle="Assignment 5"
-                    chartOnClick={(event) =>
-                      onClick(
-                        event,
-                        chartData.assignment5ChartData,
-                        refs.assignment5ChartRef,
-                      )
-                    }
-                    chartRef={refs.assignment5ChartRef}
-                    chartData={chartData.assignment5ChartData}
-                  />
-                  <DoughnutChartLayout
-                    chartTitle="Assignment 6"
-                    chartOnClick={(event) =>
-                      onClick(
-                        event,
-                        chartData.assignment6ChartData,
-                        refs.assignment6ChartRef,
-                      )
-                    }
-                    chartRef={refs.assignment6ChartRef}
-                    chartData={chartData.assignment6ChartData}
-                  />
-                </Grid>
-              </TabPanel>
+                {/*  Assignments */}
+                <TabPanel display="flex" flexDirection="row" bg="white" mt={2}>
+                  <Grid
+                    templateRows="repeat(3, 1fr)"
+                    templateColumns="repeat(3, 1fr)"
+                    gap={10}
+                  >
+                    <DoughnutChartLayout
+                      chartTitle="Assignment 1"
+                      chartOnClick={(event) =>
+                        onClick(
+                          event,
+                          chartData.assignment1ChartData,
+                          refs.assignment1ChartRef,
+                        )
+                      }
+                      chartRef={refs.assignment1ChartRef}
+                      chartData={chartData.assignment1ChartData}
+                    />
+                    <DoughnutChartLayout
+                      chartTitle="Assignment 2"
+                      chartOnClick={(event) =>
+                        onClick(
+                          event,
+                          chartData.assignment2ChartData,
+                          refs.assignment2ChartRef,
+                        )
+                      }
+                      chartRef={refs.assignment2ChartRef}
+                      chartData={chartData.assignment2ChartData}
+                    />
+                    <DoughnutChartLayout
+                      chartTitle="Assignment 3"
+                      chartOnClick={(event) =>
+                        onClick(
+                          event,
+                          chartData.assignment3ChartData,
+                          refs.assignment3ChartRef,
+                        )
+                      }
+                      chartRef={refs.assignment3ChartRef}
+                      chartData={chartData.assignment3ChartData}
+                    />
+                    <DoughnutChartLayout
+                      chartTitle="Assignment 4"
+                      chartOnClick={(event) =>
+                        onClick(
+                          event,
+                          chartData.assignment4ChartData,
+                          refs.assignment4ChartRef,
+                        )
+                      }
+                      chartRef={refs.assignment4ChartRef}
+                      chartData={chartData.assignment4ChartData}
+                    />
+                    <DoughnutChartLayout
+                      chartTitle="Assignment 5"
+                      chartOnClick={(event) =>
+                        onClick(
+                          event,
+                          chartData.assignment5ChartData,
+                          refs.assignment5ChartRef,
+                        )
+                      }
+                      chartRef={refs.assignment5ChartRef}
+                      chartData={chartData.assignment5ChartData}
+                    />
+                    <DoughnutChartLayout
+                      chartTitle="Assignment 6"
+                      chartOnClick={(event) =>
+                        onClick(
+                          event,
+                          chartData.assignment6ChartData,
+                          refs.assignment6ChartRef,
+                        )
+                      }
+                      chartRef={refs.assignment6ChartRef}
+                      chartData={chartData.assignment6ChartData}
+                    />
+                  </Grid>
+                </TabPanel>
 
-              <TabPanel display="flex" flexDirection="row" bg="white" mt={2}>
-                <Grid
-                  templateRows="repeat(1, 1fr)"
-                  templateColumns="repeat(3, 1fr)"
-                  gap={10}
-                >
-                  <DoughnutChartLayout
-                    chartTitle="Final"
-                    chartOnClick={(event) =>
-                      onClick(
-                        event,
-                        chartData.final1016ChartData,
-                        refs.final1016ChartRef,
-                      )
-                    }
-                    chartRef={refs.final1016ChartRef}
-                    chartData={chartData.final1016ChartData}
-                  />
-                  <DoughnutChartLayout
-                    chartTitle="Assignment Average"
-                    chartOnClick={(event) =>
-                      onClick(
-                        event,
-                        chartData.assignmentAverage1016ChartData,
-                        refs.assignmentAverage1016ChartRef,
-                      )
-                    }
-                    chartRef={refs.assignmentAverage1016ChartRef}
-                    chartData={chartData.assignmentAverage1016ChartData}
-                  />
-                  <DoughnutChartLayout
-                    chartTitle="Test Average"
-                    chartOnClick={(event) =>
-                      onClick(
-                        event,
-                        chartData.testAverage1016ChartData,
-                        refs.testAverage1016ChartRef,
-                      )
-                    }
-                    chartRef={refs.testAverage1016ChartRef}
-                    chartData={chartData.testAverage1016ChartData}
-                  />
-                </Grid>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
+                <TabPanel display="flex" flexDirection="row" bg="white" mt={2}>
+                  <Grid
+                    templateRows="repeat(1, 1fr)"
+                    templateColumns="repeat(3, 1fr)"
+                    gap={10}
+                  >
+                    <DoughnutChartLayout
+                      chartTitle="Final"
+                      chartOnClick={(event) =>
+                        onClick(
+                          event,
+                          chartData.final1016ChartData,
+                          refs.final1016ChartRef,
+                        )
+                      }
+                      chartRef={refs.final1016ChartRef}
+                      chartData={chartData.final1016ChartData}
+                    />
+                    <DoughnutChartLayout
+                      chartTitle="Assignment Average"
+                      chartOnClick={(event) =>
+                        onClick(
+                          event,
+                          chartData.assignmentAverage1016ChartData,
+                          refs.assignmentAverage1016ChartRef,
+                        )
+                      }
+                      chartRef={refs.assignmentAverage1016ChartRef}
+                      chartData={chartData.assignmentAverage1016ChartData}
+                    />
+                    <DoughnutChartLayout
+                      chartTitle="Test Average"
+                      chartOnClick={(event) =>
+                        onClick(
+                          event,
+                          chartData.testAverage1016ChartData,
+                          refs.testAverage1016ChartRef,
+                        )
+                      }
+                      chartRef={refs.testAverage1016ChartRef}
+                      chartData={chartData.testAverage1016ChartData}
+                    />
+                  </Grid>
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
+          </Box>
         </Box>
       </Box>
     );

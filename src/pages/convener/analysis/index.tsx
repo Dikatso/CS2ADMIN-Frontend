@@ -1,6 +1,7 @@
+/* eslint-disable import/extensions */
 import { ConvenerPageHeader } from '@/components/Convener/Header';
 import { Footer } from '@/components/Shared/Footer';
-import { Box } from '@chakra-ui/react';
+import { Box, Center, Text } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import { useStudentStore } from '@/state/studentDataStore';
 import { FileDropZone } from '@/components/Convener/FileDropZone';
@@ -39,10 +40,17 @@ const ConvenerAnalysis: NextPage = () => {
         flexDirection="row"
         justifyContent="center"
         alignItems="center"
-        mt={40}
+        mt={20}
         bg="white"
       >
-        <FileDropZone setStudents={setStudents} />
+        <Box display="flex" flexDirection="column">
+          <Center>
+            <Text fontSize="5xl" fontWeight={700} mb={8}>
+              Student Analysis
+            </Text>
+          </Center>
+          <FileDropZone setStudents={setStudents} dropType="student-analysis" />
+        </Box>
       </Box>
       <Footer />
     </Box>
