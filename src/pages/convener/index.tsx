@@ -36,7 +36,7 @@ const Convener: NextPage = () => {
         flexDirection="row"
         justifyContent="center"
         alignItems="center"
-        mt={40}
+        mt={35}
       >
         <Box
           bg="#F1F6F9"
@@ -89,6 +89,35 @@ const Convener: NextPage = () => {
             />
             <Text fontSize="2xl" mt="5px">
               Student Enquiries
+            </Text>
+          </Center>
+        </Box>
+      </Box>
+      <Box display="flex" alignItems="center" justifyContent="center" mt={10}>
+        <Box
+          bg="#F1F6F9"
+          width={250}
+          height={200}
+          mx="30px"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          boxShadow="base"
+          p="6"
+          rounded="2xl"
+          transition="transform 280ms"
+          _hover={{ cursor: `pointer`, transform: `translateY(-10px)` }}
+          onClick={() => router.push(`/convener/management`)}
+        >
+          <Center display="flex" flexDirection="column">
+            <Image
+              src={`/convener/t-manag.png`}
+              alt="Picture of the teacher illustration"
+              width={120}
+              height={120}
+            />
+            <Text fontSize="2xl" mt="5px">
+              Tutor Management
             </Text>
           </Center>
         </Box>

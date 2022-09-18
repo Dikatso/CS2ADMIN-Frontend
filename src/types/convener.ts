@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { MouseEvent } from 'react';
 
 export interface studentData {
@@ -13,6 +14,30 @@ export interface studentData {
   final1016: number;
   assignmentAverage1016: number;
   testAverage1016: number;
+}
+
+export interface studentTutorAllocation {
+  studentNumber: number;
+  a1Tutor: string;
+  a2Tutor: string;
+  a3Tutor: string;
+  a4Tutor: string;
+  a5Tutor: string;
+  a6Tutor: string;
+}
+
+export interface ITutorWithMarks {
+  tutor?: string;
+  marks?: number[];
+}
+
+export interface IAssignmentMarksWithTutors {
+  a1: ITutorWithMarks[];
+  a2: ITutorWithMarks[];
+  a3: ITutorWithMarks[];
+  a4: ITutorWithMarks[];
+  a5: ITutorWithMarks[];
+  a6: ITutorWithMarks[];
 }
 
 export interface DoughnutChartLayoutProps {
@@ -35,7 +60,9 @@ export interface DoughnutChartLayoutProps {
 }
 
 export interface FileDropZoneProps {
-  setStudents: (students: studentData[]) => void;
+  setStudents?: (students: studentData[]) => void;
+  setStudentTutorAllocation?: (studentTutorAllocation: studentTutorAllocation[]) => void;
+  dropType: 'student-analysis' | 'tutor-management'
 }
 
 export interface IchartData {
