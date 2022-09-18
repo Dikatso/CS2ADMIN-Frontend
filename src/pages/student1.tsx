@@ -74,7 +74,7 @@ const StudentPage = () => {
       role == `Convener`
         ? router.push(`/convener`)
         : () => {
-            console.log(`not authenticated`);
+            console.log();
           };
     } else {
       router.push(`/`);
