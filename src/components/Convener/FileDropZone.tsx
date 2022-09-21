@@ -1,10 +1,15 @@
 import { FileDropZoneProps } from '@/types/convener';
-import { extractDataIntoArray } from '@/utils/convener/file';
+import {
+  extractDataIntoArray2,
+  extractStudentDataIntoArray,
+  extractStudentTutorAllocationDataIntoArray,
+} from '@/utils/convener/file';
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import { useRouter } from 'next/router';
 import { IconCloudUpload, IconX, IconDownload } from '@tabler/icons';
 import { useRef } from 'react';
 import { Text, Group, Button, createStyles } from '@mantine/core';
+import { useToast } from '@chakra-ui/react';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -32,21 +37,66 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export const FileDropZone: React.FC<FileDropZoneProps> = ({ setStudents }) => {
+export const FileDropZone: React.FC<FileDropZoneProps> = ({
+  setStudents,
+  dropType,
+  setStudentTutorAllocation,
+  setStrugglingStudents,
+}) => {
   const { classes, theme } = useStyles();
   const openRef = useRef<() => void>(null);
   const router = useRouter();
+  const toast = useToast();
+
+  const handleOnDrop = async (file: File[]) => {
+    if (dropType == `student-analysis`) {
+      const students = await extractStudentDataIntoArray(file, `sa`);
+      setStudents(students);
+
+      const strugglingStudents = await extractDataIntoArray2(file);
+      setStrugglingStudents(strugglingStudents);
+
+      router.push(`/convener/analysis/results`);
+    } else if (dropType == `tutor-management`) {
+      let listOfTutorsFile = null;
+      let StudentMarksFile = null;
+
+      if (file.length !== 2) {
+        toast({
+          description: `2 files are required!`,
+          status: `info`,
+          duration: 2000,
+          isClosable: true,
+        });
+      } else {
+        if (file[0].name == `CS2withMarkers.csv`) {
+          listOfTutorsFile = file[0];
+          StudentMarksFile = file[1];
+        } else {
+          listOfTutorsFile = file[1];
+          StudentMarksFile = file[0];
+        }
+
+        const students = await extractStudentDataIntoArray(
+          StudentMarksFile,
+          `tm`,
+        );
+        setStudents(students);
+
+        const studentTutorAllocation =
+          await extractStudentTutorAllocationDataIntoArray(listOfTutorsFile);
+        setStudentTutorAllocation(studentTutorAllocation);
+
+        router.push(`/convener/management/results`);
+      }
+    }
+  };
 
   return (
     <div className={classes.wrapper}>
       <Dropzone
         openRef={openRef}
-        onDrop={async (file) => {
-          console.log(file);
-          const students = await extractDataIntoArray(file);
-          setStudents(students);
-          router.push(`/convener/analysis/results`);
-        }}
+        onDrop={handleOnDrop}
         className={classes.dropzone}
         radius="md"
         accept={[MIME_TYPES.csv]}
@@ -81,7 +131,11 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({ setStudents }) => {
           <Text align="center" weight={700} size="lg" mt="xl">
             <Dropzone.Accept>Drop files here</Dropzone.Accept>
             <Dropzone.Reject>Pdf file less than 30mb</Dropzone.Reject>
-            <Dropzone.Idle>Upload Student Marks</Dropzone.Idle>
+            <Dropzone.Idle>
+              {dropType == `tutor-management`
+                ? `Upload Student Marks & Tutor marking allocation`
+                : `Upload Student Marks`}
+            </Dropzone.Idle>
           </Text>
           <Text align="center" size="md" mt="xs" color="dimmed">
             Drag&apos;n&apos;drop files here to upload.
