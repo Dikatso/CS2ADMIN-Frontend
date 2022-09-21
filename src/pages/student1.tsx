@@ -23,7 +23,7 @@ interface createEnquiryDto {
   extensionDuration: string;
   assignmentNo: string;
   type: string;
-  enquiryMessage: string;
+  messageFromStudent: string;
 }
 
 interface fileUpload {
@@ -37,7 +37,7 @@ export interface createEnquiryResponse {
     type: string;
     title: string;
     courseCode: string;
-    enquiryMessage: string;
+    messageFromStudent: string;
     extensionDuration: string;
     attatchmentLink: string;
     assignmentNo: string;
@@ -114,7 +114,7 @@ const StudentPage = () => {
       userId: id,
       type: option,
       courseCode: coursecode,
-      enquiryMessage: AdditionalInfo,
+      messageFromStudent: AdditionalInfo,
       extensionDuration: duration,
       assignmentNo: assignment,
     });
