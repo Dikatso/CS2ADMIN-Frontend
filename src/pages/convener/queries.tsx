@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useMantineTheme } from '@mantine/core';
 import { Accordion } from '@mantine/core';
-import { Box } from '@chakra-ui/react';
+import { Box, useColorModeValue, Text, Center } from '@chakra-ui/react';
 import { TableSort } from '@/components/Student/TableSort';
 import { ConvenerPageHeader } from '@/components/Convener/Header';
 import { useEffect, useState } from 'react';
@@ -11,7 +11,7 @@ import axios from 'axios';
 import { MdAssignment } from 'react-icons/md';
 import { HiPencil } from 'react-icons/hi';
 import { Skeleton } from '@mantine/core';
-import { Enquiry } from '@/types/convener';
+import { Enquiry } from '@/types/global';
 
 async function fetchEnquiries() {
   const { data } = await axios.get<Promise<Enquiry[]>>(
@@ -65,14 +65,23 @@ const ConvenerMenu: React.FC = () => {
   const getColor = (color: string) =>
     theme.colors[color][theme.colorScheme === `dark` ? 5 : 7];
 
+  const bgColor = useColorModeValue(`white`, `#1A202C`);
+  const tableColor = useColorModeValue(`gray`, `#EDF2F7`);
+  const textColor = useColorModeValue(`#1A202C`, `white`);
+
   return (
     <>
       <ConvenerPageHeader />
       <Box>
+        <Center mt={5}>
+          <Text fontSize="5xl" as="b">
+            Student Enquiries
+          </Text>
+        </Center>
         <Accordion
           variant="separated"
           mx={150}
-          my={50}
+          mt={25}
           transitionDuration={500}
         >
           {isLoading || assignmentEnquiries == null ? (

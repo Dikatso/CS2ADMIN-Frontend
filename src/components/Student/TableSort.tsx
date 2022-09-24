@@ -17,7 +17,7 @@ import {
   IconSearch,
 } from '@tabler/icons';
 import { StudentEnquiryModal } from '../Shared/ViewEnquiryModal';
-import { Enquiry } from '@/types/convener';
+import { Enquiry } from '@/types/global';
 import { useDisclosure } from '@chakra-ui/react';
 import { StatusBadge } from '../Shared/StatusBadge';
 import moment from 'moment';
@@ -122,11 +122,6 @@ function sortData(
 }
 
 export function TableSort({ data, tableType, view }: TableSortProps) {
-  // update sorted data after invalidating fetchEnquiries
-  useEffect(() => {
-    setSortedData(data);
-  }, [data]);
-
   const [search, setSearch] = useState(``);
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
@@ -134,6 +129,10 @@ export function TableSort({ data, tableType, view }: TableSortProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry>();
 
+  // update sorted data after invalidating fetchEnquiries
+  useEffect(() => {
+    setSortedData(data);
+  }, [data]);
   const setSorting = (field: keyof RowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);

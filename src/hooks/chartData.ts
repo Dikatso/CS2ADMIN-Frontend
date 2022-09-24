@@ -1,16 +1,29 @@
-import { IchartData } from '@/types/convener';
+import { IchartData } from '@/types/global';
 import { useAssessments } from './assessments';
+import { useColorModeValue } from '@chakra-ui/react';
 
 /**
  * SKeleton config for chart data
  * @param dataValues
- * @param label
+ * @param label - label for that chart
  * @returns chart data
  */
 export const chartDataConfig = (
   dataValues: number[],
   label: string,
 ): IchartData => {
+  const criticalColor = useColorModeValue(`rgb(255, 99, 132)`, `red`);
+  const adequateColor = useColorModeValue(`rgb(54, 162, 235)`, `blue`);
+  const moderateColor = useColorModeValue(`rgb(255, 205, 86)`, `yellow`);
+  const neritoriousColor = useColorModeValue(
+    `rgba(75, 192, 192, 0.2)`,
+    `green`,
+  );
+  const outstandingColor = useColorModeValue(
+    `rgba(153, 102, 255, 0.2)`,
+    `purple`,
+  );
+
   const data = {
     labels: [
       `Critical (0-45)`,
@@ -24,11 +37,11 @@ export const chartDataConfig = (
         label: label,
         data: dataValues,
         backgroundColor: [
-          `rgb(255, 99, 132)`,
-          `rgb(54, 162, 235)`,
-          `rgb(255, 205, 86)`,
-          `rgba(75, 192, 192, 0.2)`,
-          `rgba(153, 102, 255, 0.2)`,
+          criticalColor,
+          adequateColor,
+          moderateColor,
+          neritoriousColor,
+          outstandingColor,
         ],
         borderColor: [
           `rgba(255, 99, 132, 1)`,
@@ -41,6 +54,7 @@ export const chartDataConfig = (
         spacing: 3,
         hoverOffset: 5,
         weight: 10,
+        color: `red`,
       },
     ],
   };

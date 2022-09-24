@@ -2,7 +2,7 @@ import {
   studentData,
   studentTutorAllocation,
   ITutorWithMarks,
-} from '@/types/convener';
+} from '@/types/global';
 
 /**
  * Merges the arr that contains student marks and arr that

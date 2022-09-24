@@ -1,6 +1,6 @@
 import { StudentPageHeader } from '@/components/Student/Header';
 import { Footer } from '@/components/Shared/Footer';
-import { Box, Center, Text } from '@chakra-ui/react';
+import { Box, Center, Text, useColorModeValue } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -11,6 +11,8 @@ const Student: NextPage = () => {
   const router = useRouter();
 
   const { isAuthenticated, getCurrentUser } = useAuth();
+  const bgColor = useColorModeValue(`white`, `#1A202C`);
+  const boxColor = useColorModeValue(`#F1F6F9`, `#4A5568`);
 
   useEffect(() => {
     if (isAuthenticated()) {
@@ -28,7 +30,7 @@ const Student: NextPage = () => {
   }, []);
 
   return (
-    <Box bg="white">
+    <Box bg={bgColor}>
       <StudentPageHeader />
       <Box
         height="100%"
@@ -39,7 +41,7 @@ const Student: NextPage = () => {
         mt={40}
       >
         <Box
-          bg="#F1F6F9"
+          bg={boxColor}
           width={250}
           height={200}
           mx="30px"
@@ -51,7 +53,7 @@ const Student: NextPage = () => {
           rounded="2xl"
           transition="transform 280ms"
           _hover={{ cursor: `pointer`, transform: `translateY(-10px)` }}
-          onClick={() => router.push(`/student1`)}
+          onClick={() => router.push(`/student/create`)}
         >
           <Center display="flex" flexDirection="column">
             <Image
@@ -66,7 +68,7 @@ const Student: NextPage = () => {
           </Center>
         </Box>
         <Box
-          bg="#F1F6F9"
+          bg={boxColor}
           width={250}
           height={200}
           mx="30px"

@@ -8,68 +8,63 @@ import {
   Text,
   Anchor,
 } from '@mantine/core';
-import { Box, useToast } from '@chakra-ui/react';
+import { Box, useToast, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
 import axios from 'axios';
 import { useAuth } from '@/auth/Auth';
+import { NextPage } from 'next';
+import { signInUserDto, signInUserResponse } from '@/types/global';
 
-const useStyles = createStyles((theme) => ({
-  wrapper: {
-    minHeight: 900,
-    backgroundSize: `cover`,
-    backgroundImage: `url(https://images.unsplash.com/photo-1484242857719-4b9144542727?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1280&q=80)`,
-  },
+const useStyles = createStyles((theme) => {
+  const bgColor = useColorModeValue(`white`, `#1A202C`);
 
-  form: {
-    borderRight: `1px solid ${
-      theme.colorScheme === `dark` ? theme.colors.dark[7] : theme.colors.gray[3]
-    }`,
-    minHeight: 900,
-    maxWidth: 450,
-    paddingTop: 80,
-
-    [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
-      maxWidth: `100%`,
+  return {
+    wrapper: {
+      minHeight: 900,
+      backgroundSize: `cover`,
+      backgroundImage: `url(https://images.unsplash.com/photo-1484242857719-4b9144542727?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1280&q=80)`,
+      backgroundColor: bgColor,
     },
-  },
 
-  title: {
-    color: theme.colorScheme === `dark` ? theme.white : theme.black,
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-  },
+    form: {
+      borderRight: `1px solid ${
+        theme.colorScheme === `dark`
+          ? theme.colors.dark[7]
+          : theme.colors.gray[3]
+      }`,
+      minHeight: 900,
+      maxWidth: 450,
+      paddingTop: 80,
 
-  logo: {
-    color: theme.colorScheme === `dark` ? theme.white : theme.black,
-    width: 120,
-    display: `block`,
-    marginLeft: `auto`,
-    marginRight: `auto`,
-  },
-}));
+      [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
+        maxWidth: `100%`,
+      },
+    },
 
-interface signInUserDto {
-  email: string;
-  password: string;
-}
+    title: {
+      color: theme.colorScheme === `dark` ? theme.white : theme.black,
+      fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+    },
 
-export interface signInUserResponse {
-  token: string;
-  user: {
-    id: string;
-    email: string;
-    role: string;
-    uctId: string;
+    logo: {
+      color: theme.colorScheme === `dark` ? theme.white : theme.black,
+      width: 120,
+      display: `block`,
+      marginLeft: `auto`,
+      marginRight: `auto`,
+    },
   };
-}
+});
 
-function Login() {
+const Login: NextPage = () => {
   const { classes } = useStyles();
   const router = useRouter();
-
   const [Email, setEmail] = useState(``);
   const [Password, setPassword] = useState(``);
+  const toast = useToast();
+  const { isAuthenticated, getCurrentUser } = useAuth();
 
   /**
    * Mutations or Post request
@@ -87,7 +82,7 @@ function Login() {
   useEffect(() => {
     if (isError) {
       toast({
-        description: `${error.response.data?.detail}`,
+        description: `${error?.response.data?.detail}`,
         status: `error`,
         duration: 2000,
         isClosable: true,
@@ -101,9 +96,6 @@ function Login() {
       password: Password,
     });
   };
-
-  const toast = useToast();
-  const { isAuthenticated, getCurrentUser } = useAuth();
 
   useEffect(() => {
     if (isAuthenticated()) {
@@ -186,6 +178,6 @@ function Login() {
       </Box>
     </>
   );
-}
+};
 
 export default Login;

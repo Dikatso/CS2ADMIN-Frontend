@@ -1,14 +1,20 @@
 import { ConvenerPageHeader } from '@/components/Convener/Header';
 import { Footer } from '@/components/Shared/Footer';
-import { Box, Select, Spinner, Text, Spacer } from '@chakra-ui/react';
+import {
+  Box,
+  Select,
+  Spinner,
+  Text,
+  Spacer,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { NextPage } from 'next';
 import { useStudentStore } from '@/state/studentDataStore';
 import { Stat } from '@/components/Convener/Stat';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/auth/Auth';
-import { IAssignmentMarksWithTutors, ITutorWithMarks } from '@/types/convener';
-import { IconArrowUpRight, IconArrowDownRight } from '@tabler/icons';
+import { IAssignmentMarksWithTutors, ITutorWithMarks } from '@/types/global';
 import { UnstyledButton, Group, Center } from '@mantine/core';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons';
 import { tutorsWithMarks } from '@/utils/convener/tutorManagement';
@@ -16,6 +22,7 @@ import { useStyles } from '@/styles/ManagementResults';
 
 const ManagementResults: NextPage = () => {
   const router = useRouter();
+  const bgColor = useColorModeValue(`white`, `#1A202C`);
   const { classes } = useStyles();
   const { isAuthenticated, getCurrentUser } = useAuth();
   const { students, studentTutorAllocation } = useStudentStore();
@@ -68,7 +75,7 @@ const ManagementResults: NextPage = () => {
   }, []);
 
   /**
-   * update the list of tutors/markers after changing the assignment number
+   * updates the list of tutors/markers after changing the assignment number
    * & display stats of the first tutor
    */
   useEffect(() => {
@@ -98,7 +105,7 @@ const ManagementResults: NextPage = () => {
   };
 
   return (
-    <Box bg="white">
+    <Box bg={bgColor}>
       <ConvenerPageHeader />
       {students.length == 0 ? (
         <Box>
@@ -114,7 +121,7 @@ const ManagementResults: NextPage = () => {
           justifyContent="center"
           alignItems="center"
           mt={20}
-          bg="white"
+          bg={bgColor}
         >
           <Text fontSize="5xl" fontWeight={700} mb={10}>
             Tutor Management

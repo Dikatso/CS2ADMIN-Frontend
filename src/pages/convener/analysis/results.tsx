@@ -1,7 +1,7 @@
 /* eslint-disable import/extensions */
 import { ConvenerPageHeader } from '@/components/Convener/Header';
 import { useStudentStore } from '@/state/studentDataStore';
-import { chartCtx, IchartData } from '@/types/convener';
+import { chartCtx, IchartData } from '@/types/global';
 import {
   Box,
   Tab,
@@ -14,6 +14,7 @@ import {
   Spinner,
   Center,
   useDisclosure,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
@@ -45,6 +46,8 @@ const AnalysisResults: NextPage = () => {
   const { students, strugglingStudents } = useStudentStore();
   const [currentChartCtx, setCurrentChartCtx] = useState<chartCtx>({});
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const textColor = useColorModeValue(`#1A202C`, `white`);
+  const bgColor = useColorModeValue(`white`, `#1A202C`);
 
   const { isAuthenticated, getCurrentUser } = useAuth();
 
@@ -145,11 +148,12 @@ const AnalysisResults: NextPage = () => {
       <Box>
         <ConvenerPageHeader />
         <Box
-          bg="white"
           display="flex"
           justifyContent="center"
           alignItems="center"
           mt={5}
+          color={textColor}
+          bg={bgColor}
         >
           <StudentsModal
             isOpen={isOpen}
@@ -162,7 +166,7 @@ const AnalysisResults: NextPage = () => {
                 Student Analysis
               </Text>
             </Center>
-            <Tabs variant="soft-rounded" colorScheme="green" bg="white">
+            <Tabs variant="soft-rounded" colorScheme="green" bg={bgColor}>
               <TabList display="flex" justifyContent="center">
                 <Tab>
                   <Text fontSize="lg">Tests</Text>
@@ -185,7 +189,12 @@ const AnalysisResults: NextPage = () => {
 
               <TabPanels>
                 {/*  Tests */}
-                <TabPanel display="flex" flexDirection="row" bg="white" mt={2}>
+                <TabPanel
+                  display="flex"
+                  flexDirection="row"
+                  mt={2}
+                  bg={bgColor}
+                >
                   <Grid
                     templateRows="repeat(1, 1fr)"
                     templateColumns="repeat(2, 1fr)"
@@ -219,7 +228,12 @@ const AnalysisResults: NextPage = () => {
                 </TabPanel>
 
                 {/*  Assignments */}
-                <TabPanel display="flex" flexDirection="row" bg="white" mt={2}>
+                <TabPanel
+                  display="flex"
+                  flexDirection="row"
+                  bg={bgColor}
+                  mt={2}
+                >
                   <Grid
                     templateRows="repeat(3, 1fr)"
                     templateColumns="repeat(3, 1fr)"
@@ -300,7 +314,12 @@ const AnalysisResults: NextPage = () => {
                   </Grid>
                 </TabPanel>
 
-                <TabPanel display="flex" flexDirection="row" bg="white" mt={2}>
+                <TabPanel
+                  display="flex"
+                  flexDirection="row"
+                  bg={bgColor}
+                  mt={2}
+                >
                   <Grid
                     templateRows="repeat(1, 1fr)"
                     templateColumns="repeat(3, 1fr)"

@@ -1,5 +1,5 @@
-import { Enquiry } from '@/types/convener';
-import { Box, Text, Flex, Spacer } from '@chakra-ui/react';
+import { Enquiry } from '@/types/global';
+import { Box, Text, Flex, Spacer, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 interface StudentDetailsProps {
@@ -7,15 +7,17 @@ interface StudentDetailsProps {
 }
 
 export const StudentDetails: React.FC<StudentDetailsProps> = ({ enquiry }) => {
+  const bgColor = useColorModeValue(`white`, `#4A5568`);
+  const textColor = useColorModeValue(`#1A202C`, `white`);
   return (
     <>
-      <Text color="#333333" fontSize={`xl`} as="b">
+      <Text color={textColor} fontSize={`xl`} as="b">
         Student Details
       </Text>
       <Box
         my={3}
         borderColor="#bfbfbf"
-        bgColor="white"
+        bgColor={bgColor}
         boxShadow="xs"
         borderRadius={10}
       >

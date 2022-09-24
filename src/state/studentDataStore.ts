@@ -2,7 +2,7 @@
 /* eslint-disable import/extensions */
 import create from 'zustand';
 
-import { strugglingStudentData, studentData, studentTutorAllocation } from '@/types/convener';
+import { strugglingStudentData, studentData, studentTutorAllocation } from '@/types/global';
 
 interface StudentDataState {
   //
@@ -12,9 +12,10 @@ interface StudentDataState {
   setStudentTutorAllocation: (data: studentTutorAllocation[]) => void;
   strugglingStudents: strugglingStudentData[],
   setStrugglingStudents: (students: strugglingStudentData[]) => void,
+  getStudents: () => studentData[],
 }
 
-export const useStudentStore = create<StudentDataState>((set) => ({
+export const useStudentStore = create<StudentDataState>((set, get) => ({
   // initial state
   students: [],
   studentTutorAllocation: [],
@@ -36,4 +37,5 @@ export const useStudentStore = create<StudentDataState>((set) => ({
       strugglingStudents: students,
     });
   },
+  getStudents: () => get().students
 }));

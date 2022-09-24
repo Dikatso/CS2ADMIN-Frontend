@@ -1,24 +1,25 @@
 import { LandingPageHeader } from '@/components/LandingPage/Header';
-import { Box, Center, Text, Button } from '@chakra-ui/react';
+import { Box, Center, Text, Button, useColorModeValue } from '@chakra-ui/react';
 import { Footer } from '@/components/Shared/Footer';
-import { LandingPageContainer } from '@/components/LandingPage/Container';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { NextPage } from 'next';
 
-export default function Home() {
+const Home: NextPage = () => {
   const [state, setState] = useState(true);
-
   const router = useRouter();
+  const bgColor = useColorModeValue(`white`, `#1A202C`);
+  const textColor = useColorModeValue(`#1A202C`, `white`);
 
   return (
     <>
-      <LandingPageContainer>
+      <Box bg={bgColor} w="100%" height="100%">
         <>
           <LandingPageHeader state={state} setState={setState} />
           <Box
-            bg="white"
-            color="black"
+            bg={bgColor}
+            color={textColor}
             display="flex"
             flexDirection="row"
             justifyContent="center"
@@ -26,7 +27,7 @@ export default function Home() {
             mx="100px"
           >
             <Box
-              bg="white"
+              bg={bgColor}
               display="flex"
               flexDirection="column"
               alignContent="center"
@@ -43,7 +44,7 @@ export default function Home() {
                 <Button
                   w="300px"
                   mt="40px"
-                  colorScheme="white"
+                  colorScheme="blue"
                   size="lg"
                   variant="outline"
                   onClick={() => {
@@ -54,7 +55,7 @@ export default function Home() {
                 </Button>
               </Center>
             </Box>
-            <Center bg="white" h="347px" w="full" color="blue">
+            <Center bg={bgColor} h="347px" w="full" color="blue">
               {state ? (
                 <Image
                   src={`/Teacher.png`}
@@ -74,7 +75,9 @@ export default function Home() {
           </Box>
           <Footer />
         </>
-      </LandingPageContainer>
+      </Box>
     </>
   );
 }
+
+export default Home;
