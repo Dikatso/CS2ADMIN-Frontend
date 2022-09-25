@@ -1,9 +1,9 @@
 import { useRouter } from 'next/router';
 import { useMantineTheme } from '@mantine/core';
 import { Accordion } from '@mantine/core';
-import { Box } from '@chakra-ui/react';
+import { Box, Center, Text } from '@chakra-ui/react';
 import { TableSort } from '@/components/Student/TableSort';
-import { ConvenerPageHeader } from '@/components/Convener/Header';
+import { StudentPageHeader } from '@/components/Student/Header';
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/auth/Auth';
 import { useQuery } from 'react-query';
@@ -11,7 +11,7 @@ import axios from 'axios';
 import { MdAssignment } from 'react-icons/md';
 import { HiPencil } from 'react-icons/hi';
 import { Skeleton } from '@mantine/core';
-import { Enquiry } from '@/types/convener';
+import { Enquiry } from '@/types/global';
 
 async function fetchEnquiriesByUserId() {
   const { getCurrentUser } = useAuth();
@@ -69,12 +69,17 @@ const StudentMenu: React.FC = () => {
 
   return (
     <>
-      <ConvenerPageHeader />
+      <StudentPageHeader />
       <Box>
+        <Center mt={5}>
+          <Text fontSize="5xl" as="b">
+            My Enquiries
+          </Text>
+        </Center>
         <Accordion
           variant="separated"
           mx={150}
-          my={50}
+          my={25}
           transitionDuration={500}
         >
           {isLoading || assignmentEnquiries == null ? (

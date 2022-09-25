@@ -1,4 +1,5 @@
-import { chartCtx, studentData } from '@/types/convener';
+import { studentData } from '@/types/global';
+import { StudentsModalProps } from '@/types/global';
 import { exportToCsv } from '@/utils/convener/file';
 import {
   ModalOverlay,
@@ -18,21 +19,22 @@ import {
   Table,
   Button,
   Text,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
 
-interface StudentsModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  currentChartCtx: chartCtx;
-}
-
+/**
+ * UI Functiona component modal for listing students based on performance criteria
+ * @returns JSX.Element
+ */
 export const StudentsModal: React.FC<StudentsModalProps> = ({
   isOpen,
   onClose,
   currentChartCtx,
 }) => {
   const [students, setStudents] = useState<studentData[]>();
+  const tableColor = useColorModeValue(`gray`, `#EDF2F7`);
+  const textColor = useColorModeValue(`#1A202C`, `white`);
 
   const { chartLabel, rankingCount, chartRanking, rankings } = currentChartCtx;
   useEffect(() => {
@@ -58,7 +60,7 @@ export const StudentsModal: React.FC<StudentsModalProps> = ({
         />
         <ModalContent>
           <ModalHeader>
-            <Text>
+            <Text color={textColor}>
               Showing {rankingCount} students with {chartRanking} performance on
               {` `}
               {chartLabel}
@@ -67,7 +69,7 @@ export const StudentsModal: React.FC<StudentsModalProps> = ({
           <ModalCloseButton />
           <ModalBody>
             <TableContainer>
-              <Table variant="striped" colorScheme="gray" size="lg">
+              <Table variant="striped" colorScheme={tableColor} size="lg">
                 <TableCaption>Student Marks</TableCaption>
                 <Thead>
                   <Tr>
@@ -95,11 +97,17 @@ export const StudentsModal: React.FC<StudentsModalProps> = ({
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
+            <Button
+              variant="outline"
+              colorScheme="red"
+              mr={3}
+              onClick={onClose}
+            >
               Close
             </Button>
             <Button
-              variant="ghost"
+              variant="solid"
+              colorScheme="blue"
               onClick={() => exportToCsv(students, chartLabel, chartRanking)}
             >
               Download

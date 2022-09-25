@@ -1,12 +1,16 @@
 import { IconArrowUpRight } from '@tabler/icons';
 import { Text, Paper, Group, RingProgress, Center } from '@mantine/core';
-import { ITutorWithMarks } from '@/types/convener';
+import { ITutorWithMarks } from '@/types/global';
 
 interface IStatProps {
   currentTutorWithMarks: ITutorWithMarks;
   type: 'max' | 'mean' | 'min';
 }
 
+/**
+ * UI Function component showing tutor statistics
+ * @returns JSX.Element
+ */
 export const Stat: React.FC<IStatProps> = ({ currentTutorWithMarks, type }) => {
   let statScore = 0;
   let ringColor = `black`;

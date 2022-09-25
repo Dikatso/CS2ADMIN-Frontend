@@ -1,4 +1,4 @@
-import { studentData } from '@/types/convener';
+import { studentData } from '@/types/global';
 
 export const test1Ranking = (students: studentData[]) => {
   const Critical = students.filter(

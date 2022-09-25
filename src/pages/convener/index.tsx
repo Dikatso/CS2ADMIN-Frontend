@@ -1,7 +1,7 @@
 import { useAuth } from '@/auth/Auth';
 import { ConvenerPageHeader } from '@/components/Convener/Header';
 import { Footer } from '@/components/Shared/Footer';
-import { Box, Center, Text } from '@chakra-ui/react';
+import { Box, Center, Text, useColorModeValue } from '@chakra-ui/react';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -27,8 +27,11 @@ const Convener: NextPage = () => {
     }
   }, []);
 
+  const bgColor = useColorModeValue(`white`, `#1A202C`);
+  const boxColor = useColorModeValue(`#F1F6F9`, `#4A5568`);
+
   return (
-    <Box bg="white">
+    <Box bg={bgColor}>
       <ConvenerPageHeader />
       <Box
         height="100%"
@@ -39,8 +42,8 @@ const Convener: NextPage = () => {
         mt={35}
       >
         <Box
-          bg="#F1F6F9"
-          width={250}
+          bg={boxColor}
+          width={270}
           height={200}
           mx="30px"
           display="flex"
@@ -60,14 +63,14 @@ const Convener: NextPage = () => {
               width={120}
               height={120}
             />
-            <Text fontSize="2xl" mt="5px">
+            <Text fontSize="2xl" mt="5px" as="b">
               Student Analysis
             </Text>
           </Center>
         </Box>
         <Box
-          bg="#F1F6F9"
-          width={250}
+          bg={boxColor}
+          width={270}
           height={200}
           mx="30px"
           display="flex"
@@ -87,7 +90,7 @@ const Convener: NextPage = () => {
               width={120}
               height={120}
             />
-            <Text fontSize="2xl" mt="5px">
+            <Text fontSize="2xl" mt="5px" as="b">
               Student Enquiries
             </Text>
           </Center>
@@ -95,8 +98,8 @@ const Convener: NextPage = () => {
       </Box>
       <Box display="flex" alignItems="center" justifyContent="center" mt={10}>
         <Box
-          bg="#F1F6F9"
-          width={250}
+          bg={boxColor}
+          width={270}
           height={200}
           mx="30px"
           display="flex"
@@ -116,7 +119,7 @@ const Convener: NextPage = () => {
               width={120}
               height={120}
             />
-            <Text fontSize="2xl" mt="5px">
+            <Text fontSize="2xl" mt="5px" as="b">
               Tutor Management
             </Text>
           </Center>

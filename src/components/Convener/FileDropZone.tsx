@@ -1,4 +1,4 @@
-import { FileDropZoneProps } from '@/types/convener';
+import { FileDropZoneProps } from '@/types/global';
 import {
   extractDataIntoArray2,
   extractStudentDataIntoArray,
@@ -9,7 +9,8 @@ import { useRouter } from 'next/router';
 import { IconCloudUpload, IconX, IconDownload } from '@tabler/icons';
 import { useRef } from 'react';
 import { Text, Group, Button, createStyles } from '@mantine/core';
-import { useToast } from '@chakra-ui/react';
+import { useToast, useColorModeValue } from '@chakra-ui/react';
+import { useStudentStore } from '@/state/studentDataStore';
 
 const useStyles = createStyles((theme) => ({
   wrapper: {
@@ -37,26 +38,37 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export const FileDropZone: React.FC<FileDropZoneProps> = ({
-  setStudents,
-  dropType,
-  setStudentTutorAllocation,
-  setStrugglingStudents,
-}) => {
+/**
+ * UI Function component for handling file drops and inputs
+ * @returns JSX.Element
+ */
+export const FileDropZone: React.FC<FileDropZoneProps> = ({ dropType }) => {
   const { classes, theme } = useStyles();
   const openRef = useRef<() => void>(null);
+  const { setStudents, setStrugglingStudents, setStudentTutorAllocation } =
+    useStudentStore();
   const router = useRouter();
   const toast = useToast();
+  const boxColor = useColorModeValue(`#F1F6F9`, `#4A5568`);
 
+  /**
+   * Handles drop/input files, sets data into state store and routes to appropriate page
+   * @param file - input files
+   */
   const handleOnDrop = async (file: File[]) => {
     if (dropType == `student-analysis`) {
+      /**
+       * wait for extraction of data to complete before routing
+       */
+      setTimeout(() => {
+        router.push(`/convener/analysis/results`);
+      }, 1000);
+
       const students = await extractStudentDataIntoArray(file, `sa`);
       setStudents(students);
 
       const strugglingStudents = await extractDataIntoArray2(file);
       setStrugglingStudents(strugglingStudents);
-
-      router.push(`/convener/analysis/results`);
     } else if (dropType == `tutor-management`) {
       let listOfTutorsFile = null;
       let StudentMarksFile = null;
@@ -101,7 +113,7 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
         radius="md"
         accept={[MIME_TYPES.csv]}
         maxSize={30 * 1024 ** 2}
-        style={{ backgroundColor: `#f1f6f9` }}
+        style={{ backgroundColor: boxColor }}
       >
         <div style={{ pointerEvents: `none` }}>
           <Group position="center">

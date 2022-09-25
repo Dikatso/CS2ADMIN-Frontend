@@ -1,5 +1,4 @@
-/* eslint-disable prettier/prettier */
-import { MouseEvent } from 'react';
+import { Dispatch, MouseEvent, SetStateAction } from 'react';
 
 export interface studentData {
   studentNumber: number;
@@ -16,6 +15,34 @@ export interface studentData {
   testAverage1016: number;
 }
 
+export type userData = signInUserResponse;
+
+export interface signInUserDto {
+  email: string;
+  password: string;
+}
+
+export interface signInUserResponse {
+  token: string;
+  user: {
+    id: string;
+    email: string;
+    role: string;
+    uctId: string;
+    name: string;
+  };
+}
+
+export interface Links {
+  tag: string;
+  label: string;
+  variant: string;
+}
+
+export interface LandingPageHeaderProps {
+  state: boolean;
+  setState: Dispatch<SetStateAction<boolean>>;
+}
 export interface studentTutorAllocation {
   studentNumber: number;
   a1Tutor: string;
@@ -66,13 +93,22 @@ export interface DoughnutChartLayoutProps {
   };
 }
 
-export interface FileDropZoneProps {
-  setStudents?: (students: studentData[]) => void;
-  setStudentTutorAllocation?: (studentTutorAllocation: studentTutorAllocation[]) => void;
-  setStrugglingStudents?: (strugglingStudent: strugglingStudentData[]) => void;
-  dropType: 'student-analysis' | 'tutor-management'
+export interface AssessmentDetailsProps {
+  enquiry: Enquiry;
+  updatedNoDays: string;
+  view: 'student' | 'convener';
+  setUpdatedNoDays: React.Dispatch<React.SetStateAction<string>>;
 }
 
+export interface FileDropZoneProps {
+  dropType: 'student-analysis' | 'tutor-management';
+}
+
+export interface StudentsModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  currentChartCtx: chartCtx;
+}
 export interface IchartData {
   labels: string[];
   datasets: {

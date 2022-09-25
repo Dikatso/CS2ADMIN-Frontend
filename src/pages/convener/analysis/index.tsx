@@ -1,20 +1,17 @@
 /* eslint-disable import/extensions */
 import { ConvenerPageHeader } from '@/components/Convener/Header';
 import { Footer } from '@/components/Shared/Footer';
-import { Box, Center, Text } from '@chakra-ui/react';
+import { Box, Center, Text, useColorModeValue } from '@chakra-ui/react';
 import { NextPage } from 'next';
-import { useStudentStore } from '@/state/studentDataStore';
 import { FileDropZone } from '@/components/Convener/FileDropZone';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useAuth } from '@/auth/Auth';
 
 const ConvenerAnalysis: NextPage = () => {
-  const { setStudents, setStrugglingStudents } = useStudentStore();
-
   const router = useRouter();
-
   const { isAuthenticated, getCurrentUser } = useAuth();
+  const bgColor = useColorModeValue(`white`, `#1A202C`);
 
   useEffect(() => {
     if (isAuthenticated()) {
@@ -32,7 +29,7 @@ const ConvenerAnalysis: NextPage = () => {
   }, []);
 
   return (
-    <Box bg="white">
+    <Box bg={bgColor}>
       <ConvenerPageHeader />
       <Box
         height="100%"
@@ -41,7 +38,6 @@ const ConvenerAnalysis: NextPage = () => {
         justifyContent="center"
         alignItems="center"
         mt={20}
-        bg="white"
       >
         <Box display="flex" flexDirection="column">
           <Center>
@@ -49,11 +45,7 @@ const ConvenerAnalysis: NextPage = () => {
               Student Analysis
             </Text>
           </Center>
-          <FileDropZone
-            setStudents={setStudents}
-            setStrugglingStudents={setStrugglingStudents}
-            dropType="student-analysis"
-          />
+          <FileDropZone dropType="student-analysis" />
         </Box>
       </Box>
       <Footer />

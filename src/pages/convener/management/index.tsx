@@ -1,8 +1,7 @@
 import { ConvenerPageHeader } from '@/components/Convener/Header';
 import { Footer } from '@/components/Shared/Footer';
-import { Box, Center, Text } from '@chakra-ui/react';
+import { Box, Center, Text, useColorModeValue } from '@chakra-ui/react';
 import { NextPage } from 'next';
-import { useStudentStore } from '@/state/studentDataStore';
 import { FileDropZone } from '@/components/Convener/FileDropZone';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
@@ -10,8 +9,10 @@ import { useAuth } from '@/auth/Auth';
 
 const TutorManagement: NextPage = () => {
   const router = useRouter();
-  const { setStudents, setStudentTutorAllocation } = useStudentStore();
   const { isAuthenticated, getCurrentUser } = useAuth();
+  const bgColor = useColorModeValue(`white`, `#1A202C`);
+  const tableColor = useColorModeValue(`gray`, `#EDF2F7`);
+  const textColor = useColorModeValue(`#1A202C`, `white`);
 
   useEffect(() => {
     if (isAuthenticated()) {
@@ -29,7 +30,7 @@ const TutorManagement: NextPage = () => {
   }, []);
 
   return (
-    <Box bg="white">
+    <Box bg={bgColor}>
       <ConvenerPageHeader />
       <Box
         height="100%"
@@ -38,7 +39,7 @@ const TutorManagement: NextPage = () => {
         justifyContent="center"
         alignItems="center"
         mt={20}
-        bg="white"
+        bg={bgColor}
       >
         <Box display="flex" flexDirection="column">
           <Center>
@@ -46,11 +47,7 @@ const TutorManagement: NextPage = () => {
               Tutor Management
             </Text>
           </Center>
-          <FileDropZone
-            dropType="tutor-management"
-            setStudents={setStudents}
-            setStudentTutorAllocation={setStudentTutorAllocation}
-          />
+          <FileDropZone dropType="tutor-management" />
         </Box>
       </Box>
       <Footer />

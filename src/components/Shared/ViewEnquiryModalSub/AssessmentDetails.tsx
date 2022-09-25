@@ -1,15 +1,12 @@
-import { Enquiry } from '@/types/convener';
-import { Box, Text, Flex, Spacer } from '@chakra-ui/react';
+import { AssessmentDetailsProps, Enquiry } from '@/types/global';
+import { Box, Text, Flex, Spacer, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 import { NoDaysPopOverForm } from '@/components/Shared/NoDaysPopOverForm';
 
-interface AssessmentDetailsProps {
-  enquiry: Enquiry;
-  updatedNoDays: string;
-  view: 'student' | 'convener';
-  setUpdatedNoDays: React.Dispatch<React.SetStateAction<string>>;
-}
-
+/**
+ * UI Function component for showing assessment details
+ * @returns JSX.Element
+ */
 export const AssessmentDetails: React.FC<AssessmentDetailsProps> = ({
   enquiry,
   updatedNoDays,
@@ -17,16 +14,18 @@ export const AssessmentDetails: React.FC<AssessmentDetailsProps> = ({
   view,
 }) => {
   const isExtension = enquiry.type == `AssignmentExtension`;
+  const bgColor = useColorModeValue(`white`, `#4A5568`);
+  const textColor = useColorModeValue(`#1A202C`, `white`);
 
   return (
     <>
-      <Text color="#333333" fontSize={`xl`} as="b">
+      <Text color={textColor} fontSize={`xl`} as="b">
         {isExtension ? `Assignment Details` : `Test Details`}
       </Text>
       <Box
         my={3}
         borderColor="#bfbfbf"
-        bgColor="white"
+        bgColor={bgColor}
         boxShadow="xs"
         borderRadius={10}
       >

@@ -1,4 +1,4 @@
-import { Enquiry } from '@/types/convener';
+import { Enquiry } from '@/types/global';
 import {
   Button,
   Modal,
@@ -12,6 +12,7 @@ import {
   Text,
   Spacer,
   Textarea,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useState } from 'react';
@@ -139,6 +140,13 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
       }
     }
   };
+  const bgColor = useColorModeValue(`white`, `#1A202C`);
+  const modalContentColor = useColorModeValue(`#F7F7F7`, `#1A202C`);
+  const textColor = useColorModeValue(`#1A202C`, `white`);
+  const rbuttonBgColor = useColorModeValue(`red`, `red.500`);
+  const rbuttonColor = useColorModeValue(`white`, `white`);
+  const gbuttonBgColor = useColorModeValue(`green`, `green.500`);
+  const gbuttonColor = useColorModeValue(`white`, `white`);
 
   return (
     <>
@@ -150,9 +158,9 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader display="flex" flexDirection="row">
+          <ModalHeader display="flex" flexDirection="row" bg={bgColor}>
             <Box
-              bg="white"
+              bg={bgColor}
               w="full"
               display="flex"
               flexDirection="column"
@@ -170,7 +178,7 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
             <StatusBadge enquiryStatus={enquiry.status} size="lg" />
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody bg="#F7F7F7" pb={10}>
+          <ModalBody bg={modalContentColor} pb={10}>
             {view == `convener` ? <StudentDetails enquiry={enquiry} /> : <></>}
             <AssessmentDetails
               enquiry={enquiry}
@@ -181,7 +189,7 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
             <TabDetails enquiry={enquiry} view={view} />
 
             {/* Text area for notes to students */}
-            <Text color="#333333" fontSize={`xl`} as="b">
+            <Text color={textColor} fontSize={`xl`} as="b">
               {view === `convener` ? `Notes to student` : `Notes to convener`}
             </Text>
             <Box
@@ -194,6 +202,7 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
               <Textarea
                 placeholder="Message goes here..."
                 value={notesToUser}
+                color={`black`}
                 onChange={(e) => setNotesToUser(e.target.value)}
               />
             </Box>
@@ -201,7 +210,7 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
           <Box border="1px" borderColor="#bfbfbf"></Box>
 
           {/* Modal footer, contains action buttons */}
-          <ModalFooter bg="#F7F7F7">
+          <ModalFooter bg={modalContentColor}>
             <Spacer />
             {view === `convener` ? (
               <>
@@ -210,6 +219,8 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
                   isLoading={Reject.isLoading}
                   isDisabled={Reject.isDisabled}
                   colorScheme="red"
+                  bgColor={rbuttonBgColor}
+                  color={rbuttonColor}
                   mr={3}
                   onClick={() => onSubmit(`Rejected`)}
                 >
@@ -220,6 +231,8 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
                   isLoading={Accept.isLoading}
                   isDisabled={Accept.isDisabled}
                   colorScheme="green"
+                  bgColor={gbuttonBgColor}
+                  color={gbuttonColor}
                   onClick={() => onSubmit(`Approved`)}
                 >
                   Accept
@@ -232,6 +245,8 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
                   isLoading={Delete.isLoading}
                   isDisabled={Delete.isDisabled}
                   colorScheme="red"
+                  bgColor={rbuttonBgColor}
+                  color={rbuttonColor}
                   mr={3}
                   onClick={() => onSubmit(``)}
                 >
@@ -242,6 +257,8 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
                   isLoading={Update.isLoading}
                   isDisabled={Update.isDisabled}
                   colorScheme="green"
+                  bgColor={gbuttonBgColor}
+                  color={gbuttonColor}
                   onClick={() => onSubmit(enquiry.status)}
                 >
                   Update
