@@ -179,11 +179,7 @@ export const TableSort: React.FC<TableSortProps> = ({
         >
           <td>{row.id}</td>
           <td>{row.courseCode}</td>
-          {tableType == `test` ? (
-            <td>{row.testNo}</td>
-          ) : (
-            <td>{row.assignmentNo}</td>
-          )}
+          {tableType === `assignment` ? <td>{row.assignmentNo}</td> : <></>}
           <td>{moment(row.createdAt).format(`lll`)}</td>
           <td>{moment(row.updatedAt).format(`lll`)}</td>
           <td>
@@ -225,18 +221,17 @@ export const TableSort: React.FC<TableSortProps> = ({
             >
               Course
             </TableHeader>
-            <TableHeader
-              sorted={
-                sortBy === (tableType === `test` ? `testNo` : `assignmentNo`)
-              }
-              reversed={reverseSortDirection}
-              onSort={() => {
-                const value = tableType === `test` ? `testNo` : `assignmentNo`;
-                setSorting(value);
-              }}
-            >
-              {tableType === `test` ? `Test No.` : `Assign No.`}
-            </TableHeader>
+            {tableType === `test` ? (
+              <></>
+            ) : (
+              <TableHeader
+                sorted={sortBy === `assignmentNo`}
+                reversed={reverseSortDirection}
+                onSort={() => setSorting(`assignmentNo`)}
+              >
+                Assignment No
+              </TableHeader>
+            )}
 
             <TableHeader
               sorted={sortBy === `createdAt`}

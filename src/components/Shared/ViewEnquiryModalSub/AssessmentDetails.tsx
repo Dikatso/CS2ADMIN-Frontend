@@ -35,22 +35,23 @@ export const AssessmentDetails: React.FC<AssessmentDetailsProps> = ({
         boxShadow="xs"
         borderRadius={10}
       >
-        <Box boxShadow="xs" borderColor="#bfbfbf" borderTopRadius={10}>
-          <Flex>
-            <Text p="4" color="#969799" as="b">
-              No.
-            </Text>
-            <Spacer />
-            <Text p="4" as="b">
-              {isExtension ? enquiry.assignmentNo : enquiry.testNo}
-            </Text>
-          </Flex>
-        </Box>
-        <Box
-          borderColor="#bfbfbf"
-          boxShadow="xs"
-          borderBottomRadius={isExtension ? 0 : 10}
-        >
+        {isExtension ? (
+          <Box boxShadow="xs" borderColor="#bfbfbf" borderTopRadius={10}>
+            <Flex>
+              <Text p="4" color="#969799" as="b">
+                No.
+              </Text>
+              <Spacer />
+              <Text p="4" as="b">
+                {enquiry.assignmentNo}
+              </Text>
+            </Flex>
+          </Box>
+        ) : (
+          <></>
+        )}
+
+        <Box borderColor="#bfbfbf" boxShadow="xs" borderRadius={10}>
           <Flex>
             <Text p="4" color="#969799" as="b">
               Course
