@@ -19,6 +19,7 @@ import { useMutation } from 'react-query';
 import axios from 'axios';
 import { useState } from 'react';
 
+/**creating enquiry interface and defining data types of each fields to be stored in the database*/
 interface createEnquiryDto {
   userId: string;
   courseCode: string;
@@ -28,11 +29,13 @@ interface createEnquiryDto {
   messageFromStudent: string;
 }
 
+/**creating interface for storing the file*/
 interface fileUpload {
   enqId: string;
   file: File;
 }
 
+/**enquiry fields complete*/
 export interface createEnquiryResponse {
   enquiry: {
     userId: string;
@@ -49,6 +52,7 @@ export interface createEnquiryResponse {
 }
 
 const StudentPage = () => {
+  /** defining states for changing components */
   const [option, setValue] = useState(``);
   const handleChange = (event) => setValue(event.nativeEvent.target.value);
   const router = useRouter();
@@ -61,17 +65,18 @@ const StudentPage = () => {
   const textColor = useColorModeValue(`#1A202C`, `white`);
   const boxColor = useColorModeValue(`white`, `#4A5568`);
 
-  const formdata = new FormData();
+  const formdata = new FormData();// creating formdata instance for storing the attachment link
   formdata.append(`fileUpload`, fileValue);
   const toast = useToast();
 
   const handleSubmit = (event) => {
     event.preventDefault();
   };
+  /** function to return query id from the submitted query */
   function getQueryID(data) {
     return data.data.id.toString();
   }
-
+/**use effect function for checking the role of the logged in user */
   React.useEffect(() => {
     if (isAuthenticated()) {
       const {
@@ -87,6 +92,7 @@ const StudentPage = () => {
     }
   }, []);
 
+/** add file mutation to update the database with attachment link*/
   const addFileMutation = useMutation(
     (queryId: string) => {
       return axios.post(`http://127.0.0.1:8000/apis/file/${queryId}`, formdata);
@@ -103,7 +109,7 @@ const StudentPage = () => {
       },
     },
   );
-
+/** mutation for posting the enquiry in the database*/
   const createEnquiryMutation = useMutation(
     (enquiry: createEnquiryDto) => {
       return axios.post<createEnquiryResponse>(
@@ -118,7 +124,7 @@ const StudentPage = () => {
       },
     },
   );
-
+/** function to create query based on the logged in user*/
   function createQuery() {
     const {
       user: { id },
@@ -132,7 +138,7 @@ const StudentPage = () => {
       assignmentNo: assignment,
     });
   }
-
+/** use effect function for capturing the file from the user upload */
   React.useEffect(() => {
     console.log(fileValue);
   }, [fileValue]);
@@ -152,6 +158,7 @@ const StudentPage = () => {
           rounded="md"
           bg={boxColor}
         >
+          {/* Defining form creating the query*/}
           <FormControl onSubmit={handleSubmit}>
             <FormLabel color={textColor}>Course Code</FormLabel>
             <Input
@@ -164,11 +171,12 @@ const StudentPage = () => {
             <FormLabel mt={3} color={textColor}>
               Type
             </FormLabel>
+
+            {/* Combo box for query types */}
             <Select defaultValue={option} onChange={handleChange}>
               <option value="options">Select an option</option>
               <option value="AssignmentExtension">Assignment Extension</option>
               <option value="TestConcession">Test concession</option>
-              <option value="general">General Admin Query</option>
             </Select>
             {option === `TestConcession` || option === `AssignmentExtension` ? (
               <>
@@ -187,6 +195,7 @@ const StudentPage = () => {
                       Assignment Number
                     </FormLabel>
                     <Input
+                      placeholder='e.g Assignment 1'
                       type="string"
                       onChange={(event) => setAssignment(event.target.value)}
                       value={assignment}
@@ -195,6 +204,7 @@ const StudentPage = () => {
                       Extension duration
                     </FormLabel>
                     <Input
+                      placeholder='Number of days e.g 5 days'
                       type="string"
                       onChange={(event) => setDuration(event.target.value)}
                       value={duration}
@@ -216,19 +226,8 @@ const StudentPage = () => {
               <></>
             )}
 
-            {option === `general` ? (
-              <>
-                <Textarea
-                  placeholder="type here"
-                  label="Query:"
-                  value={AdditionalInfo}
-                  onChange={(event) => setAdditionalInfo(event.target.value)}
-                />
-              </>
-            ) : (
-              <></>
-            )}
             <Button
+            // event handler for the submit button
               onClick={() => {
                 createQuery();
               }}
