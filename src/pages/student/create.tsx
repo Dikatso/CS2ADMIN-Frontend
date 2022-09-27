@@ -38,7 +38,7 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
   const textColor = useColorModeValue(`#1A202C`, `white`);
   const boxColor = useColorModeValue(`white`, `#4A5568`);
 
-  const formdata = new FormData();
+  const formdata = new FormData();// creating formdata instance for storing the attachment link
   formdata.append(`fileUpload`, fileValue);
   const toast = useToast();
 
@@ -69,6 +69,7 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
     }
   }, []);
 
+/** add file mutation to update the database with attachment link*/
   const addFileMutation = useMutation(
     (queryId: string) => {
       return axios.post(`http://127.0.0.1:8000/apis/file/${queryId}`, formdata);
@@ -85,7 +86,7 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
       },
     },
   );
-
+/** mutation for posting the enquiry in the database*/
   const createEnquiryMutation = useMutation(
     (enquiry: createEnquiryDto) => {
       return axios.post<createEnquiryResponse>(
@@ -130,6 +131,7 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
           rounded="md"
           bg={boxColor}
         >
+          {/* Defining form creating the query*/}
           <FormControl onSubmit={handleSubmit}>
             <FormLabel color={textColor}>Course Code</FormLabel>
             <Input
@@ -142,11 +144,12 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
             <FormLabel mt={3} color={textColor}>
               Type
             </FormLabel>
+
+            {/* Combo box for query types */}
             <Select defaultValue={option} onChange={handleChange}>
               <option value="options">Select an option</option>
               <option value="AssignmentExtension">Assignment Extension</option>
               <option value="TestConcession">Test concession</option>
-              <option value="general">General Admin Query</option>
             </Select>
             {option === `TestConcession` || option === `AssignmentExtension` ? (
               <>
@@ -165,6 +168,7 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
                       Assignment Number
                     </FormLabel>
                     <Input
+                      placeholder='e.g Assignment 1'
                       type="string"
                       onChange={(event) => setAssignment(event.target.value)}
                       value={assignment}
@@ -173,6 +177,7 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
                       Extension duration
                     </FormLabel>
                     <Input
+                      placeholder='Number of days e.g 5 days'
                       type="string"
                       onChange={(event) => setDuration(event.target.value)}
                       value={duration}
@@ -194,19 +199,8 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
               <></>
             )}
 
-            {option === `general` ? (
-              <>
-                <Textarea
-                  placeholder="type here"
-                  label="Query:"
-                  value={AdditionalInfo}
-                  onChange={(event) => setAdditionalInfo(event.target.value)}
-                />
-              </>
-            ) : (
-              <></>
-            )}
             <Button
+            // event handler for the submit button
               onClick={() => {
                 createQuery();
               }}
