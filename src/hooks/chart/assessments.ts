@@ -11,7 +11,7 @@ import {
   final1016Ranking,
   assignmentAverage1016Ranking,
   testAverage1016Ranking,
-} from '../utils/convener/studentMarksRanking';
+} from '@/utils/convener/studentMarksRanking';
 
 /**
  * Creates student rankings from students in zustand state

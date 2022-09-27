@@ -10,104 +10,17 @@ import {
   Transition,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import {
-  Button,
-  Switch,
-  useColorModeValue,
-  Stack,
-  useColorMode,
-} from '@chakra-ui/react';
+import { Button, Switch, Stack, useColorMode } from '@chakra-ui/react';
 import { LandingPageHeaderProps, Links } from '@/types/global';
-
-const HEADER_HEIGHT = 60;
-
-const useStyles = createStyles((theme) => {
-  const bgColor = useColorModeValue(`white`, `#1A202C`);
-
-  return {
-    root: {
-      position: `relative`,
-      zIndex: 1,
-      backgroundColor: bgColor,
-    },
-
-    dropdown: {
-      position: `absolute`,
-      top: HEADER_HEIGHT,
-      left: 0,
-      right: 0,
-      zIndex: 0,
-      borderTopRightRadius: 0,
-      borderTopLeftRadius: 0,
-      borderTopWidth: 0,
-      overflow: `hidden`,
-
-      [theme.fn.largerThan(`sm`)]: {
-        display: `none`,
-      },
-    },
-
-    header: {
-      display: `flex`,
-      justifyContent: `space-between`,
-      alignItems: `center`,
-      height: `100%`,
-    },
-
-    links: {
-      [theme.fn.smallerThan(`sm`)]: {
-        display: `none`,
-      },
-    },
-
-    burger: {
-      [theme.fn.largerThan(`sm`)]: {
-        display: `none`,
-      },
-    },
-
-    link: {
-      display: `block`,
-      lineHeight: 1,
-      padding: `8px 12px`,
-      borderRadius: theme.radius.sm,
-      textDecoration: `none`,
-      color:
-        theme.colorScheme === `dark`
-          ? theme.colors.dark[0]
-          : theme.colors.gray[7],
-      fontSize: theme.fontSizes.sm,
-      fontWeight: 500,
-
-      '&:hover': {
-        backgroundColor:
-          theme.colorScheme === `dark`
-            ? theme.colors.dark[6]
-            : theme.colors.gray[0],
-      },
-
-      [theme.fn.smallerThan(`sm`)]: {
-        borderRadius: 0,
-        padding: theme.spacing.md,
-      },
-    },
-
-    linkActive: {
-      '&, &:hover': {
-        backgroundColor: theme.fn.variant({
-          variant: `light`,
-          color: theme.primaryColor,
-        }).background,
-        color: theme.fn.variant({ variant: `light`, color: theme.primaryColor })
-          .color,
-      },
-    },
-  };
-});
+import { useStylesHeader } from '@/styles/LandingPage.Header';
 
 /**
  * UI Function component for rendering page header
- * @returns JSX.Element
+ * @param {object} props Component props
+ * @param {} placeholder
+ * @param {boolean} props.state view of the current user
+ * @param {Dispatch<SetStateAction<boolean>>} props.setState setState function for updating the state of the view
+ * @returns {JSX.Element} JSX Element
  */
 export const LandingPageHeader: React.FC<LandingPageHeaderProps> = ({
   state,
@@ -115,8 +28,9 @@ export const LandingPageHeader: React.FC<LandingPageHeaderProps> = ({
 }) => {
   const router = useRouter();
   const [opened] = useDisclosure(false);
-  const { classes } = useStyles();
+  const { classes } = useStylesHeader();
   const { colorMode, toggleColorMode } = useColorMode();
+  const HEADER_HEIGHT = 60;
 
   const links: Array<Links> = [
     { tag: `login`, label: `Sign In`, variant: `ghost` },

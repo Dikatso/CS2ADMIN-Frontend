@@ -1,7 +1,11 @@
-import { signInUserResponse } from '@/pages/login';
+import { signInUserResponse } from '@/types/global';
 
 type userData = signInUserResponse;
 
+/**
+ * Authentication hooks
+ * @returns - auth methods
+ */
 export const useAuth = () => {
   const logout = (): void => {
     localStorage.removeItem(`cs2-auth`);

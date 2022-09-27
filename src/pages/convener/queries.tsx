@@ -2,31 +2,35 @@ import { useRouter } from 'next/router';
 import { useMantineTheme } from '@mantine/core';
 import { Accordion } from '@mantine/core';
 import { Box, useColorModeValue, Text, Center } from '@chakra-ui/react';
-import { TableSort } from '@/components/Student/TableSort';
+import { TableSort } from '@/components/Shared/TableSort';
 import { ConvenerPageHeader } from '@/components/Convener/Header';
 import { useEffect, useState } from 'react';
-import { useAuth } from '@/auth/Auth';
+import { useAuth } from '@/hooks/auth/Auth';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { MdAssignment } from 'react-icons/md';
 import { HiPencil } from 'react-icons/hi';
 import { Skeleton } from '@mantine/core';
 import { Enquiry } from '@/types/global';
+import { NextPage } from 'next';
 
-async function fetchEnquiries() {
-  const { data } = await axios.get<Promise<Enquiry[]>>(
-    `http://127.0.0.1:8000/apis/enquiries`,
-  );
-  return data;
-}
-
-const ConvenerMenu: React.FC = () => {
+/**
+ * UI Function component showing nextjs page for convener main menu
+ * @returns {JSX.Element} JSX Element
+ */
+const ConvenerMenuPage: NextPage = (): JSX.Element => {
   const router = useRouter();
-
   const { isAuthenticated, getCurrentUser } = useAuth();
   const [assignmentEnquiries, setAssignmentEnquiries] =
     useState<Enquiry[]>(null);
   const [testEnquiries, setTestEnquiries] = useState<Enquiry[]>(null);
+
+  const fetchEnquiries = async () => {
+    const { data } = await axios.get<Promise<Enquiry[]>>(
+      `http://127.0.0.1:8000/apis/enquiries`,
+    );
+    return data;
+  };
 
   const { data, isLoading, isSuccess } = useQuery(
     `fetchEnquiries`,
@@ -129,4 +133,4 @@ const ConvenerMenu: React.FC = () => {
   );
 };
 
-export default ConvenerMenu;
+export default ConvenerMenuPage;

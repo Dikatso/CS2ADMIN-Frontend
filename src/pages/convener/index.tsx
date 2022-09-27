@@ -1,4 +1,4 @@
-import { useAuth } from '@/auth/Auth';
+import { useAuth } from '@/hooks/auth/Auth';
 import { ConvenerPageHeader } from '@/components/Convener/Header';
 import { Footer } from '@/components/Shared/Footer';
 import { Box, Center, Text, useColorModeValue } from '@chakra-ui/react';
@@ -7,7 +7,11 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
-const Convener: NextPage = () => {
+/**
+ * UI Function component showing nextjs page for convener main page
+ * @returns {JSX.Element} JSX Element
+ */
+const ConvenerPage: NextPage = (): JSX.Element => {
   const router = useRouter();
 
   const { isAuthenticated, getCurrentUser } = useAuth();
@@ -130,4 +134,4 @@ const Convener: NextPage = () => {
   );
 };
 
-export default Convener;
+export default ConvenerPage;

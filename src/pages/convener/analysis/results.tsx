@@ -27,17 +27,21 @@ import {
   InteractionItem,
 } from 'chart.js';
 import { getDatasetAtEvent, getElementAtEvent } from 'react-chartjs-2';
-import { useAssessments } from '@/hooks/assessments';
-import { useChartData } from '@/hooks/chartData';
-import { useChartRefs } from '@/hooks/chartRefs';
+import { useAssessments } from '@/hooks/chart/assessments';
+import { useChartData } from '@/hooks/chart/chartData';
+import { useChartRefs } from '@/hooks/chart/chartRefs';
 import { StudentsModal } from '@/components/Convener/StudentListModal';
 import { DoughnutChartLayout } from '@/components/Convener/ChartLayout';
-import { useAuth } from '@/auth/Auth';
+import { useAuth } from '@/hooks/auth/Auth';
 import { exportToCsv2 } from '@/utils/convener/file';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const AnalysisResults: NextPage = () => {
+/**
+ * UI Function component showing nextjs page for convener analysis results
+ * @returns {JSX.Element} JSX Element
+ */
+const AnalysisResultsPage: NextPage = (): JSX.Element => {
   const router = useRouter();
   const refs = useChartRefs();
   const assessments = useAssessments();
@@ -51,6 +55,10 @@ const AnalysisResults: NextPage = () => {
 
   const { isAuthenticated, getCurrentUser } = useAuth();
 
+  /**
+   * Allow only authenticated users to access this page or
+   * redirect to appropriate page
+   */
   useEffect(() => {
     if (isAuthenticated()) {
       const {
@@ -66,6 +74,10 @@ const AnalysisResults: NextPage = () => {
     }
   }, []);
 
+  /**
+   * Allow only authenticated users to access this page or
+   * redirect to appropriate page
+   */
   useEffect(() => {
     if (isAuthenticated()) {
       if (students.length == 0) {
@@ -375,4 +387,4 @@ const AnalysisResults: NextPage = () => {
   }
 };
 
-export default AnalysisResults;
+export default AnalysisResultsPage;

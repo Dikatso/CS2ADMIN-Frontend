@@ -5,14 +5,20 @@ import { NoDaysPopOverForm } from '@/components/Shared/NoDaysPopOverForm';
 
 /**
  * UI Function component for showing assessment details
- * @returns JSX.Element
+ * @param {object} props Component props
+ * @param {} placeholder
+ * @param {Enquiry} props.enquiry selected Enquiry from list view
+ * @param {string} props.view represent the current user view
+ * @param {string} props.updatedNoDays new no of days from input feild
+ * @param {Function} props.setUpdatedNoDays function for updating the state for no of days
+ * @returns {JSX.Element} JSX Element
  */
 export const AssessmentDetails: React.FC<AssessmentDetailsProps> = ({
   enquiry,
   updatedNoDays,
   setUpdatedNoDays,
   view,
-}) => {
+}): JSX.Element => {
   const isExtension = enquiry.type == `AssignmentExtension`;
   const bgColor = useColorModeValue(`white`, `#4A5568`);
   const textColor = useColorModeValue(`#1A202C`, `white`);

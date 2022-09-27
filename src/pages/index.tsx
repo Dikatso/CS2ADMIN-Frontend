@@ -6,7 +6,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 
-const Home: NextPage = () => {
+/**
+ * UI Fucntion component for displaying the Home page
+ * @returns {JSX.Element} JSX Element
+ */
+const HomePage: NextPage = (): JSX.Element => {
   const [state, setState] = useState(true);
   const router = useRouter();
   const bgColor = useColorModeValue(`white`, `#1A202C`);
@@ -78,6 +82,6 @@ const Home: NextPage = () => {
       </Box>
     </>
   );
-}
+};
 
-export default Home;
+export default HomePage;

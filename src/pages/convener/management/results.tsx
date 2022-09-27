@@ -13,14 +13,18 @@ import { useStudentStore } from '@/state/studentDataStore';
 import { Stat } from '@/components/Convener/Stat';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAuth } from '@/auth/Auth';
+import { useAuth } from '@/hooks/auth/Auth';
 import { IAssignmentMarksWithTutors, ITutorWithMarks } from '@/types/global';
 import { UnstyledButton, Group, Center } from '@mantine/core';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons';
 import { tutorsWithMarks } from '@/utils/convener/tutorManagement';
-import { useStyles } from '@/styles/ManagementResults';
+import { useStyles } from '@/styles/Management.Results';
 
-const ManagementResults: NextPage = () => {
+/**
+ * UI Function component showing nextjs page for tutor management results
+ * @returns {JSX.Element} JSX Element
+ */
+const ManagementResults: NextPage = (): JSX.Element => {
   const router = useRouter();
   const bgColor = useColorModeValue(`white`, `#1A202C`);
   const { classes } = useStyles();
@@ -81,8 +85,6 @@ const ManagementResults: NextPage = () => {
   useEffect(() => {
     const tutorsWithMarks = assignmentTutorsWithMarks[`a${assignmentNumber}`];
     setCurrentTutorsWithMarks(tutorsWithMarks || null);
-
-    console.log(tutorsWithMarks);
 
     if (tutorsWithMarks != undefined) {
       const tutorWithMarks = tutorsWithMarks[0];

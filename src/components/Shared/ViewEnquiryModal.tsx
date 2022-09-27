@@ -1,4 +1,8 @@
-import { Enquiry } from '@/types/global';
+import {
+  ButtonStatuses,
+  StudentEnquiryModalProps,
+  Enquiry,
+} from '@/types/global';
 import {
   Button,
   Modal,
@@ -23,19 +27,22 @@ import { TabDetails } from '@/components/Shared/ViewEnquiryModalSub/TabDetails';
 import { useMutation, useQueryClient } from 'react-query';
 import moment from 'moment';
 
-interface StudentEnquiryModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  enquiry: Enquiry;
-  view: 'student' | 'convener';
-}
-
+/**
+ * UI Function component for displaying the viewed enquiry
+ * @param {object} props Component props
+ * @param {} placeholder
+ * @param {boolean} props.isOpen current status of the modal
+ * @param {string} props.view represent the current user view
+ * @param {Enquiry} props.enquiry selected Enquiry from list view
+ * @param {Function} props.onClose function for closing the modal
+ * @returns {JSX.Element} JSX Element
+ */
 export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
   onClose,
   isOpen,
   enquiry,
   view,
-}) => {
+}): JSX.Element => {
   const messageFromUser = () =>
     view === `student`
       ? enquiry.messageFromStudent
@@ -45,6 +52,9 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
   const [notesToUser, setNotesToUser] = useState(messageFromUser());
   const [updatedNoDays, setUpdatedNoDays] = useState(enquiry.extensionDuration);
 
+  /**
+   * Mutation for posting enquiries
+   */
   const updateMutation = useMutation(
     (enq: any) => {
       return axios.put(`http://127.0.0.1:8000/apis/enquiry/${enquiry.id}`, enq);
@@ -57,6 +67,9 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
     },
   );
 
+  /**
+   * Mutation for deleting enquiries
+   */
   const deleteMutation = useMutation(
     () => {
       return axios.delete(`http://127.0.0.1:8000/apis/enquiry/${enquiry.id}`);
@@ -68,18 +81,6 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
       },
     },
   );
-
-  interface StatusFeilds {
-    isLoading: boolean;
-    isDisabled: boolean;
-  }
-
-  interface ButtonStatuses {
-    Reject: StatusFeilds;
-    Accept: StatusFeilds;
-    Delete: StatusFeilds;
-    Update: StatusFeilds;
-  }
 
   /**
    * finds out the status (loading & disabled) of each button
@@ -117,7 +118,7 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
 
   /**
    * submit method
-   * @param status - new status of the enquiry
+   * @param {string} status - new status of the enquiry
    */
   const onSubmit = (status: string) => {
     // if status not specified, assume deletion of enquiry
@@ -140,6 +141,7 @@ export const StudentEnquiryModal: React.FC<StudentEnquiryModalProps> = ({
       }
     }
   };
+
   const bgColor = useColorModeValue(`white`, `#1A202C`);
   const modalContentColor = useColorModeValue(`#F7F7F7`, `#1A202C`);
   const textColor = useColorModeValue(`#1A202C`, `white`);

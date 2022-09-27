@@ -1,15 +1,20 @@
+import { StatusBadgeProps } from '@/types/global';
 import { Box } from '@chakra-ui/react';
-import { Badge, MantineSize } from '@mantine/core';
+import { Badge } from '@mantine/core';
 
-interface StatusBadgeProps {
-  enquiryStatus: string;
-  size: MantineSize;
-}
-
+/**
+ * UI Function component for displaying enquiry status based on its status
+ * @param {object} props Component props
+ * @param {} placeholder
+ * @param {string} props.enquiryStatus selected enquiry status
+ * @param {MantineSize} props.size size of the bade
+ * @param {React.Dispatch<React.SetStateAction<string>>} props.onChange setState function for updating no of days
+ * @returns {JSX.Element} JSX Element
+ */
 export const StatusBadge: React.FC<StatusBadgeProps> = ({
   enquiryStatus,
   size,
-}) => {
+}): JSX.Element => {
   let color = ``;
 
   switch (enquiryStatus) {

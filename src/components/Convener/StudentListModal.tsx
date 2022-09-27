@@ -25,13 +25,18 @@ import { useState, useEffect } from 'react';
 
 /**
  * UI Functiona component modal for listing students based on performance criteria
- * @returns JSX.Element
+ * @param {object} props Component props
+ * @param {} placeholder
+ * @param {boolean} props.isOpen status of the modal
+ * @param {Function} props.onClose function for closing the student list modal
+ * @param {chartCtx} props.currentChartCtx current context of the view chart
+ * @returns {JSX.Element} JSX Element
  */
 export const StudentsModal: React.FC<StudentsModalProps> = ({
   isOpen,
   onClose,
   currentChartCtx,
-}) => {
+}): JSX.Element => {
   const [students, setStudents] = useState<studentData[]>();
   const tableColor = useColorModeValue(`gray`, `#EDF2F7`);
   const textColor = useColorModeValue(`#1A202C`, `white`);
