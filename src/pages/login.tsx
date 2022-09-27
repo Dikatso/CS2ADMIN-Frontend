@@ -110,6 +110,7 @@ const LoginPage: NextPage = (): JSX.Element => {
             </Title>
 
             <TextInput
+              name = "loginEmail"
               label="Email address"
               placeholder="uctcredential@myuct.ac.za"
               size="md"
@@ -117,6 +118,7 @@ const LoginPage: NextPage = (): JSX.Element => {
               onChange={(e) => setEmail(e.target.value)}
             />
             <PasswordInput
+              name = "loginPassword"
               label="Password"
               placeholder="Your password"
               mt="md"
@@ -125,6 +127,7 @@ const LoginPage: NextPage = (): JSX.Element => {
               onChange={(e) => setPassword(e.target.value)}
             />
             <Button
+              name = "loginButton"
               fullWidth
               mt="xl"
               size="md"

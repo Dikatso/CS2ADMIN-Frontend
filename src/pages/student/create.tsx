@@ -54,20 +54,20 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
    * Allow only authenticated users to access this page or
    * redirect to appropriate page
    */
-  useEffect(() => {
-    if (isAuthenticated()) {
-      const {
-        user: { role },
-      } = getCurrentUser();
-      role == `Convener`
-        ? router.push(`/convener`)
-        : () => {
-            console.log();
-          };
-    } else {
-      router.push(`/`);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (isAuthenticated()) {
+  //     const {
+  //       user: { role },
+  //     } = getCurrentUser();
+  //     role == `Convener`
+  //       ? router.push(`/convener`)
+  //       : () => {
+  //           console.log();
+  //         };
+  //   } else {
+  //     router.push(`/`);
+  //   }
+  // }, []);
 
 /** add file mutation to update the database with attachment link*/
   const addFileMutation = useMutation(
@@ -135,6 +135,7 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
           <FormControl onSubmit={handleSubmit}>
             <FormLabel color={textColor}>Course Code</FormLabel>
             <Input
+              name='courseInput'
               id="coursecode"
               type="string"
               onChange={(event) => setCourseCode(event.target.value)}
@@ -146,7 +147,7 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
             </FormLabel>
 
             {/* Combo box for query types */}
-            <Select defaultValue={option} onChange={handleChange}>
+            <Select name="selectComponent" defaultValue={option} onChange={handleChange}>
               <option value="options">Select an option</option>
               <option value="AssignmentExtension">Assignment Extension</option>
               <option value="TestConcession">Test concession</option>
@@ -157,6 +158,7 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
                   Upload Medical Certificate
                 </FormLabel>
                 <FileInput
+                  name='file'
                   mt={5}
                   value={fileValue}
                   onChange={setFileValue}
@@ -190,6 +192,7 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
                   Additional Info
                 </FormLabel>
                 <Textarea
+                  name = "addInfo"
                   placeholder="Type here"
                   value={AdditionalInfo}
                   onChange={(event) => setAdditionalInfo(event.target.value)}
@@ -201,6 +204,7 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
 
             <Button
             // event handler for the submit button
+            name='Submit'
               onClick={() => {
                 createQuery();
               }}
