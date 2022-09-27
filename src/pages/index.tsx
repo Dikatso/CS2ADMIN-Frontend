@@ -41,8 +41,8 @@ const HomePage: NextPage = (): JSX.Element => {
               </Text>
               <Text fontSize="3xl" textAlign="center">
                 {state
-                  ? `A tool design to offer a helping hand with CS2 admin issues from analysing the students performance to attending to student's queries.`
-                  : `A convinient tool to connect you to the teaching staff. Submit everything from assignment extension requests to general queries.`}
+                  ? `A tool designed to offer a helping hand with CS2 admin issues from analysing the students performance to attending to student's queries.`
+                  : `A convinient tool to connect you to the teaching staff. Submit everything from assignment extension requests to test concessions.`}
               </Text>
               <Center>
                 <Button
