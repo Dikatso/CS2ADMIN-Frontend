@@ -42,6 +42,7 @@ export const LandingPageHeader: React.FC<LandingPageHeaderProps> = ({
       key={index}
       colorScheme="blue"
       size="md"
+      name={link.tag}
       variant={link.variant}
       onClick={() => {
         if (link.tag === `login`) {
