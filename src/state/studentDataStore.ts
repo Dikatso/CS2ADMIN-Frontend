@@ -1,8 +1,10 @@
-/* eslint-disable prettier/prettier */
-/* eslint-disable import/extensions */
 import create from 'zustand';
 
-import { strugglingStudentData, studentData, studentTutorAllocation } from '@/types/global';
+import {
+  strugglingStudentData,
+  studentData,
+  studentTutorAllocation,
+} from '@/types/global';
 
 interface StudentDataState {
   //
@@ -10,9 +12,9 @@ interface StudentDataState {
   setStudents: (data: studentData[]) => void;
   studentTutorAllocation: studentTutorAllocation[];
   setStudentTutorAllocation: (data: studentTutorAllocation[]) => void;
-  strugglingStudents: strugglingStudentData[],
-  setStrugglingStudents: (students: strugglingStudentData[]) => void,
-  getStudents: () => studentData[],
+  strugglingStudents: strugglingStudentData[];
+  setStrugglingStudents: (students: strugglingStudentData[]) => void;
+  getStudents: () => studentData[];
 }
 
 export const useStudentStore = create<StudentDataState>((set, get) => ({
@@ -27,7 +29,9 @@ export const useStudentStore = create<StudentDataState>((set, get) => ({
       students: students,
     });
   },
-  setStudentTutorAllocation: (studentTutorAllocation: studentTutorAllocation[]) => {
+  setStudentTutorAllocation: (
+    studentTutorAllocation: studentTutorAllocation[],
+  ) => {
     set({
       studentTutorAllocation: studentTutorAllocation,
     });
@@ -37,5 +41,5 @@ export const useStudentStore = create<StudentDataState>((set, get) => ({
       strugglingStudents: students,
     });
   },
-  getStudents: () => get().students
+  getStudents: () => get().students,
 }));

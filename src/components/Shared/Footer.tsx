@@ -1,9 +1,12 @@
-import { FC } from 'react';
 import Image from 'next/image';
 import { Box } from '@chakra-ui/react';
 import styles from '@/styles/Home.module.css';
 
-export const Footer: FC = () => {
+/**
+ * UI Function component for displaying the global website footer
+ * @returns {JSX.Element} JSX Element
+ */
+export const Footer: React.FC = (): JSX.Element => {
   return (
     <>
       <Box

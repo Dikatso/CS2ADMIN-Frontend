@@ -1,15 +1,9 @@
-import { createStyles, Header, Container, Group } from '@mantine/core';
-import { HeaderIcon } from '@/components/Shared/HeaderIcon';
-import { UserOutPopOver } from '@/components/Shared/UserPopOver';
-import { Box, Switch, useColorMode, useColorModeValue } from '@chakra-ui/react';
-import { Button } from '@chakra-ui/button';
-import React from 'react';
-import router from 'next/router';
+import { useColorModeValue } from '@chakra-ui/react';
+import { createStyles } from '@mantine/core';
 
-const HEADER_HEIGHT = 60;
-
-const useStyles = createStyles((theme) => {
+export const useStylesHeader = createStyles((theme) => {
   const bgColor = useColorModeValue(`white`, `#1A202C`);
+  const HEADER_HEIGHT = 60;
 
   return {
     root: {
@@ -91,51 +85,3 @@ const useStyles = createStyles((theme) => {
     },
   };
 });
-
-/**
- * UI Function component for rendering student page header
- * @returns {JSX.Element} JSX Element
- */
-export const StudentPageHeader: React.FC = () => {
-  const { classes } = useStyles();
-  const { colorMode, toggleColorMode } = useColorMode();
-
-  return (
-    <Header height={HEADER_HEIGHT} className={classes.root}>
-      <Container className={classes.header}>
-        <HeaderIcon />
-        <Group spacing={5} className={classes.links}>
-          <Button
-            colorScheme="blue"
-            size="md"
-            variant={`ghost`}
-            onClick={() => {
-              router.push(`/student`);
-            }}
-          >
-            Home
-          </Button>
-          <Button
-            colorScheme="blue"
-            size="md"
-            variant={`ghost`}
-            onClick={() => {
-              router.push(`/student/queries`);
-            }}
-          >
-            Enquiries
-          </Button>
-          <Box>
-            <UserOutPopOver />
-          </Box>
-          <Switch
-            size="md"
-            onChange={() => toggleColorMode()}
-            color="red"
-            isChecked={colorMode === `light` ? false : true}
-          />
-        </Group>
-      </Container>
-    </Header>
-  );
-};

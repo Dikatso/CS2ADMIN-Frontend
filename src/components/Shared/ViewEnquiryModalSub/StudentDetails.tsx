@@ -1,14 +1,20 @@
-import { Enquiry } from '@/types/global';
+import { StudentDetailsProps, Enquiry } from '@/types/global';
 import { Box, Text, Flex, Spacer, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
-interface StudentDetailsProps {
-  enquiry: Enquiry;
-}
-
-export const StudentDetails: React.FC<StudentDetailsProps> = ({ enquiry }) => {
+/**
+ * UI Function component for displaying student details based on the passed enquiry
+ * @param {object} props Component props
+ * @param {} placeholder
+ * @param {Enquiry} props.enquiry selected Enquiry from list view
+ * @returns {JSX.Element} JSX Element
+ */
+export const StudentDetails: React.FC<StudentDetailsProps> = ({
+  enquiry,
+}): JSX.Element => {
   const bgColor = useColorModeValue(`white`, `#4A5568`);
   const textColor = useColorModeValue(`#1A202C`, `white`);
+
   return (
     <>
       <Text color={textColor} fontSize={`xl`} as="b">

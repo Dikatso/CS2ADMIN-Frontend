@@ -1,6 +1,5 @@
 import {
   Paper,
-  createStyles,
   TextInput,
   PasswordInput,
   Button,
@@ -8,87 +7,50 @@ import {
   Text,
   Anchor,
 } from '@mantine/core';
-import { Select, Stack, useToast, useColorModeValue } from '@chakra-ui/react';
+import { Select, Stack, useToast } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useMutation } from 'react-query';
-import { useAuth } from '@/auth/Auth';
+import { useAuth } from '@/hooks/auth/Auth';
 import { useRouter } from 'next/router';
 import { NextPage } from 'next';
+import { signUpUserDto } from '@/types/global';
+import { useStylesRegister } from '@/styles/register';
 
-interface signUpUserDto {
-  name: string;
-  email: string;
-  password: string;
-  uctId: string;
-  role: string;
-}
-
-const useStyles = createStyles((theme) => {
-  return {
-    wrapper: {
-      minHeight: 900,
-      backgroundSize: `cover`,
-      backgroundImage: `url(https://images.unsplash.com/photo-1484242857719-4b9144542727?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1280&q=80)`,
-    },
-
-    form: {
-      borderRight: `1px solid ${
-        theme.colorScheme === `dark`
-          ? theme.colors.dark[7]
-          : theme.colors.gray[3]
-      }`,
-      minHeight: 900,
-      maxWidth: 450,
-      paddingTop: 80,
-
-      [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
-        maxWidth: `100%`,
-      },
-    },
-
-    title: {
-      color: theme.colorScheme === `dark` ? theme.white : theme.black,
-      fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-    },
-
-    logo: {
-      color: theme.colorScheme === `dark` ? theme.white : theme.black,
-      width: 120,
-      display: `block`,
-      marginLeft: `auto`,
-      marginRight: `auto`,
-    },
-  };
-});
-
-const Register: NextPage = () => {
+/**
+ * UI Function component showing nextjs page for registering
+ * @returns {JSX.Element} JSX Element
+ */
+const RegisterPage: NextPage = (): JSX.Element => {
   const toast = useToast();
   const router = useRouter();
-
   const { isAuthenticated, getCurrentUser } = useAuth();
 
   /**
    * Mutations or Post request
    * - For creating records in the database
    */
-  const { mutate, isLoading, isError, isSuccess, error } = useMutation(
-    (user: signUpUserDto) => {
-      return axios.post(`http://127.0.0.1:8000/apis/auth/sign-up`, user);
-    },
-  );
+  const registerMutation = useMutation((user: signUpUserDto) => {
+    return axios.post(`http://127.0.0.1:8000/apis/auth/sign-up`, user);
+  });
 
+  /**
+   * Display error message if authetication failed
+   */
   useEffect(() => {
-    if (isError) {
+    if (registerMutation.isError) {
       toast({
-        description: `${error.response.data?.detail}`,
+        description: `${registerMutation.error.response.data?.detail}`,
         status: `error`,
         duration: 2000,
         isClosable: true,
       });
     }
-  }, [isError]);
+  }, [registerMutation.isError]);
 
+  /**
+   * If user is logged in redirect to appropriate page
+   */
   useEffect(() => {
     if (isAuthenticated()) {
       const {
@@ -98,8 +60,11 @@ const Register: NextPage = () => {
     }
   }, []);
 
+  /**
+   * Display welcome message if authenication successful
+   */
   useEffect(() => {
-    if (isSuccess) {
+    if (registerMutation.isSuccess) {
       router.push(`login`);
       toast({
         title: `Account created.`,
@@ -109,21 +74,21 @@ const Register: NextPage = () => {
         isClosable: true,
       });
     }
-  }, [isSuccess]);
+  }, [registerMutation.isSuccess]);
 
-  const { classes } = useStyles();
+  const { classes } = useStylesRegister();
 
   const [Name, setName] = useState(``);
   const [Surname, setSurname] = useState(``);
   const [Email, setEmail] = useState(``);
   const [UCTId, setUCTId] = useState(``);
   const [Password, setPassword] = useState(``);
-
   const [value, setValue] = useState(`Student`);
+
   const handleChange = (e) => setValue(e.target.value);
 
   const onClick = () => {
-    mutate({
+    registerMutation.mutate({
       name: Name + ` ` + Surname,
       email: Email,
       uctId: UCTId,
@@ -201,7 +166,7 @@ const Register: NextPage = () => {
           fullWidth
           mt="xl"
           size="md"
-          loading={isLoading}
+          loading={registerMutation.isLoading}
           onClick={onClick}
         >
           Register
@@ -222,4 +187,4 @@ const Register: NextPage = () => {
   );
 };
 
-export default Register;
+export default RegisterPage;

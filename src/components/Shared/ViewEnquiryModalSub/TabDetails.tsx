@@ -1,4 +1,4 @@
-import { Enquiry } from '@/types/global';
+import { Enquiry, TabDetailsProps } from '@/types/global';
 import {
   Button,
   Box,
@@ -16,12 +16,17 @@ import {
 import React from 'react';
 import { AiOutlineFilePdf } from 'react-icons/ai';
 
-interface TabDetailsProps {
-  enquiry: Enquiry;
-  view: 'student' | 'convener';
-}
-
-export const TabDetails: React.FC<TabDetailsProps> = ({ enquiry, view }) => {
+/**
+ * @param {object} props Component props
+ * @param {} placeholder
+ * @param {Enquiry} props.enquiry selected Enquiry from list view
+ * @param {string} props.view represent the current user view
+ * @returns {JSX.Element}
+ */
+export const TabDetails: React.FC<TabDetailsProps> = ({
+  enquiry,
+  view,
+}): JSX.Element => {
   const fileBlob = enquiry?.attatchmentLink?.split(`/`);
   let fileName = ``;
   if (fileBlob != undefined) {

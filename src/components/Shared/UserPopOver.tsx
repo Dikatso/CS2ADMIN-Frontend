@@ -13,15 +13,15 @@ import { MdArrowDropDownCircle } from 'react-icons/md';
 import { FiLogOut } from 'react-icons/fi';
 import { Button, Box, VStack, useColorModeValue } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import { useAuth } from '@/auth/Auth';
+import { useAuth } from '@/hooks/auth/Auth';
 import { Avatar } from '@mantine/core';
 import { userData } from '@/types/global';
 
 /**
- * UI Functiona component for showing currently logged in user
- * @returns
+ * UI Function component for displaying currently logged in user
+ * @returns {JSX.Element} JSX Element
  */
-export const UserOutPopOver: FC = () => {
+export const UserOutPopOver: FC = (): JSX.Element => {
   const initialFocusRef = React.useRef();
   const [userData, setUserData] = useState<userData>({});
   const router = useRouter();

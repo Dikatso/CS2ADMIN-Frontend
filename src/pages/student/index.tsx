@@ -5,15 +5,23 @@ import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useAuth } from '@/auth/Auth';
+import { useAuth } from '@/hooks/auth/Auth';
 
-const Student: NextPage = () => {
+/**
+ * UI Function component showing nextjs page for student main page
+ * @returns {JSX.Element} JSX Element
+ */
+const Student: NextPage = (): JSX.Element => {
   const router = useRouter();
 
   const { isAuthenticated, getCurrentUser } = useAuth();
   const bgColor = useColorModeValue(`white`, `#1A202C`);
   const boxColor = useColorModeValue(`#F1F6F9`, `#4A5568`);
 
+  /**
+   * Allow only authenticated users to access this page or
+   * redirect to appropriate page
+   */
   useEffect(() => {
     if (isAuthenticated()) {
       const {

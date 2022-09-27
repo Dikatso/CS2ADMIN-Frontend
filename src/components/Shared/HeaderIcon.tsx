@@ -3,7 +3,11 @@ import React from 'react';
 import router from 'next/router';
 import { FaLaptopCode } from 'react-icons/fa';
 
-export const HeaderIcon: React.FC = () => {
+/**
+ * UI Function component for displaying website Logo
+ * @returns {JSX.Element} JSX Element
+ */
+export const HeaderIcon: React.FC = (): JSX.Element => {
   const textColor = useColorModeValue(`#1A202C`, `white`);
 
   return (

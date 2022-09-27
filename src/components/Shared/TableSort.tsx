@@ -16,53 +16,35 @@ import {
   IconChevronUp,
   IconSearch,
 } from '@tabler/icons';
-import { StudentEnquiryModal } from '../Shared/ViewEnquiryModal';
-import { Enquiry } from '@/types/global';
+import { StudentEnquiryModal } from './ViewEnquiryModal';
+import {
+  Enquiry,
+  RowData,
+  TableHeaderProps,
+  TableSortProps,
+} from '@/types/global';
 import { useDisclosure } from '@chakra-ui/react';
-import { StatusBadge } from '../Shared/StatusBadge';
+import { StatusBadge } from './StatusBadge';
 import moment from 'moment';
+import { useStylesTableSort } from '@/styles/Shared.TableSort';
 
-const useStyles = createStyles((theme) => ({
-  th: {
-    padding: `0 !important`,
-  },
-
-  control: {
-    width: `100%`,
-    padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
-
-    '&:hover': {
-      backgroundColor:
-        theme.colorScheme === `dark`
-          ? theme.colors.dark[6]
-          : theme.colors.gray[0],
-    },
-  },
-
-  icon: {
-    width: 21,
-    height: 21,
-    borderRadius: 21,
-  },
-}));
-
-type RowData = Enquiry;
-
-interface TableSortProps {
-  data: RowData[];
-  tableType: 'test' | 'assignment';
-  view: 'student' | 'convener';
-}
-
-interface ThProps {
-  children: React.ReactNode;
-  reversed: boolean;
-  sorted: boolean;
-  onSort(): void;
-}
-
-function Th({ children, reversed, sorted, onSort }: ThProps) {
-  const { classes } = useStyles();
+/**
+ * UI Function component for displyaing the table header
+ * @param {object} props Component props
+ * @param {} placeholder
+ * @param {children} props.children status of the modal
+ * @param {boolean} props.reversed state for whether the table is reversed
+ * @param {boolean} props.sorted state for whether the table is sorted
+ * @param {Function} props.onSort function for handling the on sort method
+ * @returns {JSX.Element} JSX Element
+ */
+const TableHeader: React.FC<TableHeaderProps> = ({
+  children,
+  reversed,
+  sorted,
+  onSort,
+}): JSX.Element => {
+  const { classes } = useStylesTableSort();
   const Icon = sorted
     ? reversed
       ? IconChevronUp
@@ -82,9 +64,15 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
       </UnstyledButton>
     </th>
   );
-}
+};
 
-function filterData(data: RowData[], search: string) {
+/**
+ * Filter data based on search keyword
+ * @param {RowData[]} data - enquiry data
+ * @param {search} search - search word from input field
+ * @returns {Enquiry[]} list of enquiries matching the search keyword
+ */
+const filterData = (data: RowData[], search: string): Enquiry[] => {
   const query = search.toLowerCase().trim();
   return data.filter((item) => {
     return keys(data[0]).some((key) => {
@@ -93,12 +81,18 @@ function filterData(data: RowData[], search: string) {
       }
     });
   });
-}
+};
 
-function sortData(
+/**
+ * Sort data based on search keyword
+ * @param {RowData[]} data - enquiry data
+ * @param {search} payload - keys of data, search keyword
+ * @returns {Enquiry[]} list of enquiries matching the search keyword
+ */
+const sortData = (
   data: RowData[],
   payload: { sortBy: keyof RowData | null; reversed: boolean; search: string },
-) {
+): Enquiry[] => {
   const { sortBy } = payload;
 
   if (!sortBy) {
@@ -119,9 +113,22 @@ function sortData(
     }),
     payload.search,
   );
-}
+};
 
-export function TableSort({ data, tableType, view }: TableSortProps) {
+/**
+ * UI Function component for showing enquiries in a table format
+ * @param {object} props Component props
+ * @param {} placeholder
+ * @param {Enquiry[]} props.data - all enquiries fetched from the db
+ * @param {search} props.tableType - type of enquiry table type
+ * @param {search} props.view - represent the current user view
+ * @returns {JSX.Element} JSX Element
+ */
+export const TableSort: React.FC<TableSortProps> = ({
+  data,
+  tableType,
+  view,
+}): JSX.Element => {
   const [search, setSearch] = useState(``);
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
@@ -129,10 +136,15 @@ export function TableSort({ data, tableType, view }: TableSortProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry>();
 
-  // update sorted data after invalidating fetchEnquiries
+  /** update sorted data after invalidating fetchEnquiries */
   useEffect(() => {
     setSortedData(data);
   }, [data]);
+
+  /**
+   * Sets the sorting
+   * @param field - key of each row data
+   */
   const setSorting = (field: keyof RowData) => {
     const reversed = field === sortBy ? !reverseSortDirection : false;
     setReverseSortDirection(reversed);
@@ -140,6 +152,10 @@ export function TableSort({ data, tableType, view }: TableSortProps) {
     setSortedData(sortData(data, { sortBy: field, reversed, search }));
   };
 
+  /**
+   * Hanlde the search change input on the table
+   * @param event - HTML event
+   */
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget;
     setSearch(value);
@@ -195,21 +211,21 @@ export function TableSort({ data, tableType, view }: TableSortProps) {
       >
         <thead>
           <tr>
-            <Th
+            <TableHeader
               sorted={sortBy === `id`}
               reversed={reverseSortDirection}
               onSort={() => setSorting(`id`)}
             >
               ID
-            </Th>
-            <Th
+            </TableHeader>
+            <TableHeader
               sorted={sortBy === `courseCode`}
               reversed={reverseSortDirection}
               onSort={() => setSorting(`courseCode`)}
             >
               Course
-            </Th>
-            <Th
+            </TableHeader>
+            <TableHeader
               sorted={
                 sortBy === (tableType === `test` ? `testNo` : `assignmentNo`)
               }
@@ -220,31 +236,31 @@ export function TableSort({ data, tableType, view }: TableSortProps) {
               }}
             >
               {tableType === `test` ? `Test No.` : `Assign No.`}
-            </Th>
+            </TableHeader>
 
-            <Th
+            <TableHeader
               sorted={sortBy === `createdAt`}
               reversed={reverseSortDirection}
               onSort={() => setSorting(`createdAt`)}
             >
               Date Submitted
-            </Th>
+            </TableHeader>
 
-            <Th
+            <TableHeader
               sorted={sortBy === `updatedAt`}
               reversed={reverseSortDirection}
               onSort={() => setSorting(`updatedAt`)}
             >
               Date Updated
-            </Th>
+            </TableHeader>
 
-            <Th
+            <TableHeader
               sorted={sortBy === `status`}
               reversed={reverseSortDirection}
               onSort={() => setSorting(`status`)}
             >
               Status
-            </Th>
+            </TableHeader>
           </tr>
         </thead>
         <tbody>
@@ -273,4 +289,4 @@ export function TableSort({ data, tableType, view }: TableSortProps) {
       )}
     </ScrollArea>
   );
-}
+};

@@ -14,45 +14,18 @@ import {
 import { Button } from '@mantine/core';
 import { FileInput, Textarea } from '@mantine/core';
 import { useRouter } from 'next/router';
-import { useAuth } from '@/auth/Auth';
+import { useAuth } from '@/hooks/auth/Auth';
 import { useMutation } from 'react-query';
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createEnquiryDto, createEnquiryResponse } from '@/types/global';
+import { NextPage } from 'next';
 
-/**creating enquiry interface and defining data types of each fields to be stored in the database*/
-interface createEnquiryDto {
-  userId: string;
-  courseCode: string;
-  extensionDuration: string;
-  assignmentNo: string;
-  type: string;
-  messageFromStudent: string;
-}
-
-/**creating interface for storing the file*/
-interface fileUpload {
-  enqId: string;
-  file: File;
-}
-
-/**enquiry fields complete*/
-export interface createEnquiryResponse {
-  enquiry: {
-    userId: string;
-    type: string;
-    title: string;
-    courseCode: string;
-    messageFromStudent: string;
-    extensionDuration: string;
-    attatchmentLink: string;
-    assignmentNo: string;
-    testNo: string;
-    file: fileUpload;
-  };
-}
-
-const StudentPage = () => {
-  /** defining states for changing components */
+/**
+ * UI Function component showing nextjs page for student create enquiry page
+ * @returns {JSX.Element} JSX Element
+ */
+const StudentEnquiryPage: NextPage = (): JSX.Element => {
   const [option, setValue] = useState(``);
   const handleChange = (event) => setValue(event.nativeEvent.target.value);
   const router = useRouter();
@@ -72,12 +45,16 @@ const StudentPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
   };
-  /** function to return query id from the submitted query */
-  function getQueryID(data) {
+
+  const getQueryID = (data) => {
     return data.data.id.toString();
-  }
-/**use effect function for checking the role of the logged in user */
-  React.useEffect(() => {
+  };
+
+  /**
+   * Allow only authenticated users to access this page or
+   * redirect to appropriate page
+   */
+  useEffect(() => {
     if (isAuthenticated()) {
       const {
         user: { role },
@@ -124,8 +101,8 @@ const StudentPage = () => {
       },
     },
   );
-/** function to create query based on the logged in user*/
-  function createQuery() {
+
+  const createQuery = () => {
     const {
       user: { id },
     } = getCurrentUser();
@@ -137,11 +114,7 @@ const StudentPage = () => {
       extensionDuration: duration,
       assignmentNo: assignment,
     });
-  }
-/** use effect function for capturing the file from the user upload */
-  React.useEffect(() => {
-    console.log(fileValue);
-  }, [fileValue]);
+  };
 
   return (
     <>
@@ -247,4 +220,4 @@ const StudentPage = () => {
   );
 };
 
-export default StudentPage;
+export default StudentEnquiryPage;

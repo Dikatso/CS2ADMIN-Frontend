@@ -8,7 +8,7 @@ import {
  * Converts a csv file into an array
  * @param str
  * @param delimiter
- * @returns
+ * @returns - array of data
  */
 export const csvToArray = (str, delimiter = `,`) => {
   const headers = str.slice(0, str.indexOf(`\n`)).split(delimiter);
@@ -49,10 +49,6 @@ export const extractDataIntoArray2 = async (
         assignment2: line.A2,
         test1: line.T1,
       };
-      //A1 - student.assignment1
-      //A2 - student.assignment2
-      //T1 - student.test1
-      //NaN - false if it's a number
 
       if (isNaN(student.assignment1)) {
         student.assignment1 = 0;
@@ -106,18 +102,18 @@ export const extractStudentDataIntoArray = async (
     while (i < len) {
       const line = JSON.parse(JSON.stringify(data[i]));
       const student: studentData = {
-        "studentNumber": line.StudentNumber,
-        "assignment1": line.A1,
-        "assignment2": line.A2,
-        "assignment3": line.A3,
-        "assignment4": line.A4,
-        "assignment5": line.A5,
-        "assignment6": line.A6,
-        "test1": line.T1,
-        "test2": line.T2,
-        "final1016": line.final1016,
-        "assignmentAverage1016": line.asgAvg1016,
-        "testAverage1016": line.testAvg1016,
+        studentNumber: line.StudentNumber,
+        assignment1: line.A1,
+        assignment2: line.A2,
+        assignment3: line.A3,
+        assignment4: line.A4,
+        assignment5: line.A5,
+        assignment6: line.A6,
+        test1: line.T1,
+        test2: line.T2,
+        final1016: line.final1016,
+        assignmentAverage1016: line.asgAvg1016,
+        testAverage1016: line.testAvg1016,
       };
       students.push(student);
       i++;

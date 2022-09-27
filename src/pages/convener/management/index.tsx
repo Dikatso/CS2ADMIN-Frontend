@@ -5,15 +5,21 @@ import { NextPage } from 'next';
 import { FileDropZone } from '@/components/Convener/FileDropZone';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useAuth } from '@/auth/Auth';
+import { useAuth } from '@/hooks/auth/Auth';
 
-const TutorManagement: NextPage = () => {
+/**
+ * UI Function component showing nextjs page for tutor management
+ * @returns {JSX.Element} JSX Element
+ */
+const TutorManagementPage: NextPage = (): JSX.Element => {
   const router = useRouter();
   const { isAuthenticated, getCurrentUser } = useAuth();
   const bgColor = useColorModeValue(`white`, `#1A202C`);
-  const tableColor = useColorModeValue(`gray`, `#EDF2F7`);
-  const textColor = useColorModeValue(`#1A202C`, `white`);
 
+  /**
+   * Allow only authenticated users to access this page or
+   * redirect to appropriate page
+   */
   useEffect(() => {
     if (isAuthenticated()) {
       const {
@@ -55,4 +61,4 @@ const TutorManagement: NextPage = () => {
   );
 };
 
-export default TutorManagement;
+export default TutorManagementPage;

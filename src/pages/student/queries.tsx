@@ -2,10 +2,10 @@ import { useRouter } from 'next/router';
 import { useMantineTheme } from '@mantine/core';
 import { Accordion } from '@mantine/core';
 import { Box, Center, Text } from '@chakra-ui/react';
-import { TableSort } from '@/components/Student/TableSort';
+import { TableSort } from '@/components/Shared/TableSort';
 import { StudentPageHeader } from '@/components/Student/Header';
 import { useEffect, useState } from 'react';
-import { useAuth } from '@/auth/Auth';
+import { useAuth } from '@/hooks/auth/Auth';
 import { useQuery } from 'react-query';
 import axios from 'axios';
 import { MdAssignment } from 'react-icons/md';
@@ -13,16 +13,11 @@ import { HiPencil } from 'react-icons/hi';
 import { Skeleton } from '@mantine/core';
 import { Enquiry } from '@/types/global';
 
-async function fetchEnquiriesByUserId() {
-  const { getCurrentUser } = useAuth();
-  const { user } = getCurrentUser();
-  const { data } = await axios.get<Promise<Enquiry[]>>(
-    `http://127.0.0.1:8000/apis/enquiries/${user.id}`,
-  );
-  return data;
-}
-
-const StudentMenu: React.FC = () => {
+/**
+ * UI Function component showing nextjs page for student enquiries page
+ * @returns {JSX.Element} JSX Element
+ */
+const StudentMenuPage: React.FC = (): JSX.Element => {
   const router = useRouter();
 
   const { isAuthenticated, getCurrentUser } = useAuth();
@@ -30,11 +25,24 @@ const StudentMenu: React.FC = () => {
     useState<Enquiry[]>(null);
   const [testEnquiries, setTestEnquiries] = useState<Enquiry[]>(null);
 
+  const fetchEnquiriesByUserId = async () => {
+    const { getCurrentUser } = useAuth();
+    const { user } = getCurrentUser();
+    const { data } = await axios.get<Promise<Enquiry[]>>(
+      `http://127.0.0.1:8000/apis/enquiries/${user.id}`,
+    );
+    return data;
+  };
+
   const { data, isLoading, isSuccess } = useQuery(
     `fetchEnquiriesByUserId`,
     fetchEnquiriesByUserId,
   );
 
+  /**
+   * Allow only authenticated users to access this page or
+   * redirect to appropriate page
+   */
   useEffect(() => {
     if (isAuthenticated()) {
       const {
@@ -127,4 +135,4 @@ const StudentMenu: React.FC = () => {
   );
 };
 
-export default StudentMenu;
+export default StudentMenuPage;

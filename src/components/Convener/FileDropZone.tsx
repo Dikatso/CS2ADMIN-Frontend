@@ -7,46 +7,30 @@ import {
 import { Dropzone, MIME_TYPES } from '@mantine/dropzone';
 import { useRouter } from 'next/router';
 import { IconCloudUpload, IconX, IconDownload } from '@tabler/icons';
-import { useRef } from 'react';
-import { Text, Group, Button, createStyles } from '@mantine/core';
-import { useToast, useColorModeValue } from '@chakra-ui/react';
+import { useRef, useState } from 'react';
+import { Text, Group, Button } from '@mantine/core';
+import { useToast, useColorModeValue, useDisclosure } from '@chakra-ui/react';
 import { useStudentStore } from '@/state/studentDataStore';
-
-const useStyles = createStyles((theme) => ({
-  wrapper: {
-    position: `relative`,
-    marginBottom: 30,
-  },
-
-  dropzone: {
-    borderWidth: 1,
-    paddingBottom: 50,
-  },
-
-  icon: {
-    color:
-      theme.colorScheme === `dark`
-        ? theme.colors.dark[3]
-        : theme.colors.gray[4],
-  },
-
-  control: {
-    position: `absolute`,
-    width: 250,
-    left: `calc(50% - 125px)`,
-    bottom: -20,
-  },
-}));
+import { LoadingOverlay } from '@/components/Shared/LoadingOverlay';
+import { useStylesFileDropZone } from '@/styles/FileDropZone';
 
 /**
  * UI Function component for handling file drops and inputs
- * @returns JSX.Element
+ * @param {object} props Component props
+ * @param {} placeholder
+ * @param {string} props.dropType drop type action, be it for student analysis or tutor management
+ * @returns {JSX.Element} JSX Element
  */
-export const FileDropZone: React.FC<FileDropZoneProps> = ({ dropType }) => {
-  const { classes, theme } = useStyles();
+export const FileDropZone: React.FC<FileDropZoneProps> = ({
+  dropType,
+}): JSX.Element => {
+  const { classes, theme } = useStylesFileDropZone();
   const openRef = useRef<() => void>(null);
   const { setStudents, setStrugglingStudents, setStudentTutorAllocation } =
     useStudentStore();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [message, setMessage] = useState(``);
+
   const router = useRouter();
   const toast = useToast();
   const boxColor = useColorModeValue(`#F1F6F9`, `#4A5568`);
@@ -56,13 +40,31 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({ dropType }) => {
    * @param file - input files
    */
   const handleOnDrop = async (file: File[]) => {
+    /** open loading modal overlay */
+    onOpen();
+
     if (dropType == `student-analysis`) {
+      setMessage(`Generating Student Analysis....`);
+
       /**
-       * wait for extraction of data to complete before routing
+       * wait for extraction of data to complete & validate input file before  routing
        */
       setTimeout(() => {
-        router.push(`/convener/analysis/results`);
-      }, 1000);
+        if (file[0].name !== `CS2withCS1.csv`) {
+          /** close loading modal overlay */
+          onClose();
+
+          /** error with appropriate message */
+          toast({
+            description: `incorrect input, CS2withCS1.csv required`,
+            status: `info`,
+            duration: 3000,
+            isClosable: true,
+          });
+        } else {
+          router.push(`/convener/analysis/results`);
+        }
+      }, 2000);
 
       const students = await extractStudentDataIntoArray(file, `sa`);
       setStudents(students);
@@ -70,17 +72,35 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({ dropType }) => {
       const strugglingStudents = await extractDataIntoArray2(file);
       setStrugglingStudents(strugglingStudents);
     } else if (dropType == `tutor-management`) {
+      setMessage(`Generating Tutor Statistics....`);
+
       let listOfTutorsFile = null;
       let StudentMarksFile = null;
 
-      if (file.length !== 2) {
-        toast({
-          description: `2 files are required!`,
-          status: `info`,
-          duration: 2000,
-          isClosable: true,
-        });
-      } else {
+      /**
+       * wait for extraction of data to complete & validate input file before routing
+       */
+      setTimeout(() => {
+        if (
+          listOfTutorsFile.name !== `CS2withMarkers.csv` ||
+          StudentMarksFile.name !== `CS2withCS1.csv`
+        ) {
+          /** close loading modal overlay */
+          onClose();
+
+          /** error with appropriate message */
+          toast({
+            description: `incorrect input, CS2withCS1.csv & CS2withMarkers.csv required`,
+            status: `info`,
+            duration: 3000,
+            isClosable: true,
+          });
+        } else {
+          router.push(`/convener/management/results`);
+        }
+      }, 2000);
+
+      if (file.length === 2) {
         if (file[0].name == `CS2withMarkers.csv`) {
           listOfTutorsFile = file[0];
           StudentMarksFile = file[1];
@@ -98,14 +118,17 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({ dropType }) => {
         const studentTutorAllocation =
           await extractStudentTutorAllocationDataIntoArray(listOfTutorsFile);
         setStudentTutorAllocation(studentTutorAllocation);
-
-        router.push(`/convener/management/results`);
       }
     }
   };
 
   return (
     <div className={classes.wrapper}>
+      <LoadingOverlay
+        loadingMessage={message}
+        isOpen={isOpen}
+        onClose={onClose}
+      />
       <Dropzone
         openRef={openRef}
         onDrop={handleOnDrop}
