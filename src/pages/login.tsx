@@ -83,7 +83,7 @@ const LoginPage: NextPage = (): JSX.Element => {
           JSON.stringify(loginMutation.data.data),
         );
         toast({
-          title: `Logged in`,
+          title: `Authentcated successfully`,
           status: `success`,
           duration: 3000,
           isClosable: true,

@@ -77,7 +77,7 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
     {
       onSuccess: () => {
         toast({
-          title: `Query submitted`,
+          title: `Enquiry created`,
           status: `success`,
           duration: 3000,
           isClosable: true,

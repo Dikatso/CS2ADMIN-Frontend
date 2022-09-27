@@ -50,15 +50,15 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
        * wait for extraction of data to complete & validate input file before  routing
        */
       setTimeout(() => {
-        if (file[0].name !== `CS2withCS1.csv`) {
+        if (file[0]?.name !== `CS2withCS1.csv`) {
           /** close loading modal overlay */
           onClose();
 
           /** error with appropriate message */
           toast({
-            description: `incorrect input, CS2withCS1.csv required`,
+            description: `incorrect input, CS2withCS1.csv are required`,
             status: `info`,
-            duration: 3000,
+            duration: 5000,
             isClosable: true,
           });
         } else {
@@ -82,17 +82,17 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
        */
       setTimeout(() => {
         if (
-          listOfTutorsFile.name !== `CS2withMarkers.csv` ||
-          StudentMarksFile.name !== `CS2withCS1.csv`
+          listOfTutorsFile?.name !== `CS2withMarkers.csv` ||
+          StudentMarksFile?.name !== `CS2withCS1.csv`
         ) {
           /** close loading modal overlay */
           onClose();
 
           /** error with appropriate message */
           toast({
-            description: `incorrect input, CS2withCS1.csv & CS2withMarkers.csv required`,
+            description: `incorrect input, CS2withCS1.csv & CS2withMarkers.csv are required`,
             status: `info`,
-            duration: 3000,
+            duration: 5000,
             isClosable: true,
           });
         } else {
