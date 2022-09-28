@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useMantineTheme } from '@mantine/core';
 import { Accordion } from '@mantine/core';
-import { Box, Center, Text } from '@chakra-ui/react';
+import { Box, Center, Text, Button, Tooltip } from '@chakra-ui/react';
 import { TableSort } from '@/components/Shared/TableSort';
 import { StudentPageHeader } from '@/components/Student/Header';
 import { useEffect, useState } from 'react';
@@ -130,6 +130,17 @@ const StudentMenuPage: React.FC = (): JSX.Element => {
             </Skeleton>
           )}
         </Accordion>
+        <Box position="fixed" bottom="0px" right="0px" mb={50} mr={50}>
+          <Tooltip label="Create enquiry">
+            <Button
+              colorScheme="blue"
+              variant="solid"
+              onClick={() => router.push(`/student/create`)}
+            >
+              +
+            </Button>
+          </Tooltip>
+        </Box>
       </Box>
     </>
   );

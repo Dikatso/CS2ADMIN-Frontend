@@ -1,6 +1,5 @@
 import {
   Paper,
-  createStyles,
   TextInput,
   PasswordInput,
   Button,
@@ -8,7 +7,7 @@ import {
   Text,
   Anchor,
 } from '@mantine/core';
-import { Box, useToast, useColorModeValue } from '@chakra-ui/react';
+import { Box, useToast } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useMutation } from 'react-query';
@@ -56,13 +55,31 @@ const LoginPage: NextPage = (): JSX.Element => {
   }, [loginMutation.isError]);
 
   /**
+   * Validates the email entered
+   * @param {string} email
+   * @returns {boolean}
+   */
+  const validateEmail = (email: string) => {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  };
+
+  /**
    * Handle onclick function
    */
   const onClick = () => {
-    loginMutation.mutate({
-      email: Email,
-      password: Password,
-    });
+    if (Email.length == 0 || Password.length == 0) {
+      alert(`Please enter email and password`);
+    } else {
+      if (validateEmail(Email)) {
+        loginMutation.mutate({
+          email: Email,
+          password: Password,
+        });
+      } else {
+        alert(`Please enter a valid email address`);
+      }
+    }
   };
 
   useEffect(() => {
@@ -83,7 +100,7 @@ const LoginPage: NextPage = (): JSX.Element => {
           JSON.stringify(loginMutation.data.data),
         );
         toast({
-          title: `Authentcated successfully`,
+          title: `Authenticated successfully`,
           status: `success`,
           duration: 3000,
           isClosable: true,
@@ -110,24 +127,26 @@ const LoginPage: NextPage = (): JSX.Element => {
             </Title>
 
             <TextInput
-              name = "loginEmail"
+              name="loginEmail"
               label="Email address"
               placeholder="uctcredential@myuct.ac.za"
               size="md"
+              disabled={loginMutation.isLoading}
               value={Email}
               onChange={(e) => setEmail(e.target.value)}
             />
             <PasswordInput
-              name = "loginPassword"
+              name="loginPassword"
               label="Password"
               placeholder="Your password"
               mt="md"
+              disabled={loginMutation.isLoading}
               size="md"
               value={Password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <Button
-              name = "loginButton"
+              name="loginButton"
               fullWidth
               mt="xl"
               size="md"

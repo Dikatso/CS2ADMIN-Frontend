@@ -34,11 +34,11 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
   const [assignment, setAssignment] = useState(``);
   const [duration, setDuration] = useState(``);
   const [AdditionalInfo, setAdditionalInfo] = useState(``);
-  const [fileValue, setFileValue] = useState<File>([]);
+  const [fileValue, setFileValue] = useState<File | null>(null);
   const textColor = useColorModeValue(`#1A202C`, `white`);
   const boxColor = useColorModeValue(`white`, `#4A5568`);
 
-  const formdata = new FormData();// creating formdata instance for storing the attachment link
+  const formdata = new FormData(); // creating formdata instance for storing the attachment link
   formdata.append(`fileUpload`, fileValue);
   const toast = useToast();
 
@@ -54,22 +54,22 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
    * Allow only authenticated users to access this page or
    * redirect to appropriate page
    */
-  // useEffect(() => {
-  //   if (isAuthenticated()) {
-  //     const {
-  //       user: { role },
-  //     } = getCurrentUser();
-  //     role == `Convener`
-  //       ? router.push(`/convener`)
-  //       : () => {
-  //           console.log();
-  //         };
-  //   } else {
-  //     router.push(`/`);
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (isAuthenticated()) {
+      const {
+        user: { role },
+      } = getCurrentUser();
+      role == `Convener`
+        ? router.push(`/convener`)
+        : () => {
+            console.log();
+          };
+    } else {
+      router.push(`/`);
+    }
+  }, []);
 
-/** add file mutation to update the database with attachment link*/
+  /** add file mutation to update the database with attachment link*/
   const addFileMutation = useMutation(
     (queryId: string) => {
       return axios.post(`http://127.0.0.1:8000/apis/file/${queryId}`, formdata);
@@ -86,7 +86,8 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
       },
     },
   );
-/** mutation for posting the enquiry in the database*/
+
+  /** mutation for posting the enquiry in the database*/
   const createEnquiryMutation = useMutation(
     (enquiry: createEnquiryDto) => {
       return axios.post<createEnquiryResponse>(
@@ -106,14 +107,45 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
     const {
       user: { id },
     } = getCurrentUser();
-    createEnquiryMutation.mutate({
-      userId: id,
-      type: option,
-      courseCode: coursecode,
-      messageFromStudent: AdditionalInfo,
-      extensionDuration: duration,
-      assignmentNo: assignment,
-    });
+    if (option === `TestConcession`) {
+      if (
+        coursecode.length == 0 ||
+        AdditionalInfo.length == 0 ||
+        fileValue == null
+      ) {
+        alert(`Please fill in all input fields`);
+      } else {
+        createEnquiryMutation.mutate({
+          userId: id,
+          type: option,
+          courseCode: coursecode,
+          messageFromStudent: AdditionalInfo,
+          extensionDuration: duration,
+          assignmentNo: assignment,
+        });
+      }
+    } else if (option === `AssignmentExtension`) {
+      if (
+        coursecode.length == 0 ||
+        assignment.length == 0 ||
+        duration.length == 0 ||
+        AdditionalInfo.length == 0 ||
+        fileValue == null
+      ) {
+        alert(`Please fill in all input fields`);
+      } else {
+        createEnquiryMutation.mutate({
+          userId: id,
+          type: option,
+          courseCode: coursecode,
+          messageFromStudent: AdditionalInfo,
+          extensionDuration: duration,
+          assignmentNo: assignment,
+        });
+      }
+    } else {
+      alert(`Please fill in all input fields`);
+    }
   };
 
   return (
@@ -135,9 +167,12 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
           <FormControl onSubmit={handleSubmit}>
             <FormLabel color={textColor}>Course Code</FormLabel>
             <Input
-              name='courseInput'
+              name="courseInput"
               id="coursecode"
               type="string"
+              isDisabled={
+                createEnquiryMutation.isLoading || addFileMutation.isLoading
+              }
               onChange={(event) => setCourseCode(event.target.value)}
               value={coursecode}
             />
@@ -147,7 +182,14 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
             </FormLabel>
 
             {/* Combo box for query types */}
-            <Select name="selectComponent" defaultValue={option} onChange={handleChange}>
+            <Select
+              name="selectComponent"
+              defaultValue={option}
+              isDisabled={
+                createEnquiryMutation.isLoading || addFileMutation.isLoading
+              }
+              onChange={handleChange}
+            >
               <option value="options">Select an option</option>
               <option value="AssignmentExtension">Assignment Extension</option>
               <option value="TestConcession">Test concession</option>
@@ -158,11 +200,14 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
                   Upload Medical Certificate
                 </FormLabel>
                 <FileInput
-                  name='file'
+                  name="file"
                   mt={5}
                   value={fileValue}
                   onChange={setFileValue}
                   placeholder="Medical certificate .pdf"
+                  disabled={
+                    createEnquiryMutation.isLoading || addFileMutation.isLoading
+                  }
                 />
                 {option === `AssignmentExtension` ? (
                   <>
@@ -170,19 +215,27 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
                       Assignment Number
                     </FormLabel>
                     <Input
-                      placeholder='e.g Assignment 1'
+                      placeholder="e.g Assignment 1"
                       type="string"
                       onChange={(event) => setAssignment(event.target.value)}
                       value={assignment}
+                      isDisabled={
+                        createEnquiryMutation.isLoading ||
+                        addFileMutation.isLoading
+                      }
                     />
                     <FormLabel mt={3} color={textColor}>
                       Extension duration
                     </FormLabel>
                     <Input
-                      placeholder='Number of days e.g 5 days'
+                      placeholder="Number of days e.g 5 days"
                       type="string"
                       onChange={(event) => setDuration(event.target.value)}
                       value={duration}
+                      isDisabled={
+                        createEnquiryMutation.isLoading ||
+                        addFileMutation.isLoading
+                      }
                     />
                   </>
                 ) : (
@@ -192,10 +245,13 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
                   Additional Info
                 </FormLabel>
                 <Textarea
-                  name = "addInfo"
+                  name="addInfo"
                   placeholder="Type here"
                   value={AdditionalInfo}
                   onChange={(event) => setAdditionalInfo(event.target.value)}
+                  disabled={
+                    createEnquiryMutation.isLoading || addFileMutation.isLoading
+                  }
                 />
               </>
             ) : (
@@ -203,8 +259,8 @@ const StudentEnquiryPage: NextPage = (): JSX.Element => {
             )}
 
             <Button
-            // event handler for the submit button
-            name='Submit'
+              // event handler for the submit button
+              name="Submit"
               onClick={() => {
                 createQuery();
               }}
