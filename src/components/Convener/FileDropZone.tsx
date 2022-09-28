@@ -130,6 +130,7 @@ export const FileDropZone: React.FC<FileDropZoneProps> = ({
         onClose={onClose}
       />
       <Dropzone
+        name = "dropFile"
         openRef={openRef}
         onDrop={handleOnDrop}
         className={classes.dropzone}
