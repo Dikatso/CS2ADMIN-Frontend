@@ -87,14 +87,38 @@ const RegisterPage: NextPage = (): JSX.Element => {
 
   const handleChange = (e) => setValue(e.target.value);
 
+  /**
+   * Validates the email entered
+   * @param {string} email
+   * @returns {boolean}
+   */
+  const validateEmail = (email: string) => {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  };
+
   const onClick = () => {
-    registerMutation.mutate({
-      name: Name + ` ` + Surname,
-      email: Email,
-      uctId: UCTId,
-      password: Password,
-      role: value,
-    });
+    if (
+      Name.length == 0 ||
+      Surname.length == 0 ||
+      Email.length == 0 ||
+      UCTId.length == 0 ||
+      Password.length == 0
+    ) {
+      alert(`Please fill in all input fields`);
+    } else {
+      if (validateEmail(Email)) {
+        registerMutation.mutate({
+          name: Name + ` ` + Surname,
+          email: Email,
+          uctId: UCTId,
+          password: Password,
+          role: value,
+        });
+      } else {
+        alert(`Please enter a valid email address`);
+      }
+    }
   };
 
   return (
@@ -113,7 +137,9 @@ const RegisterPage: NextPage = (): JSX.Element => {
         <TextInput
           label="Name"
           placeholder="name"
+          name="registerName"
           size="md"
+          disabled={registerMutation.isLoading}
           mt="md"
           value={Name}
           onChange={(e) => setName(e.target.value)}
@@ -123,6 +149,8 @@ const RegisterPage: NextPage = (): JSX.Element => {
           label="Surname"
           placeholder="surname"
           size="md"
+          disabled={registerMutation.isLoading}
+          name="registerSurname"
           mt="md"
           value={Surname}
           onChange={(e) => setSurname(e.target.value)}
@@ -131,6 +159,8 @@ const RegisterPage: NextPage = (): JSX.Element => {
         <TextInput
           label="Email"
           placeholder="email"
+          name="registerEmail"
+          disabled={registerMutation.isLoading}
           size="md"
           mt="md"
           value={Email}
@@ -138,8 +168,10 @@ const RegisterPage: NextPage = (): JSX.Element => {
         />
 
         <TextInput
-          label="UCT Number"
+          label="UCT Id"
           placeholder="uct number"
+          name="registerUctNumber"
+          disabled={registerMutation.isLoading}
           size="md"
           mt="md"
           value={UCTId}
@@ -149,6 +181,8 @@ const RegisterPage: NextPage = (): JSX.Element => {
         <PasswordInput
           label="Password"
           placeholder="Your password"
+          name="registerPassword"
+          disabled={registerMutation.isLoading}
           mt="md"
           size="md"
           value={Password}
@@ -157,7 +191,11 @@ const RegisterPage: NextPage = (): JSX.Element => {
 
         <Stack spacing={4}>
           <div style={{ display: `flex`, justifyContent: `space-between` }} />
-          <Select onChange={handleChange} variant="outline">
+          <Select
+            onChange={handleChange}
+            variant="outline"
+            disabled={registerMutation.isLoading}
+          >
             <option value="Student">Student</option>
             <option value="Convener">Convener</option>
           </Select>
@@ -166,6 +204,7 @@ const RegisterPage: NextPage = (): JSX.Element => {
           fullWidth
           mt="xl"
           size="md"
+          name="registerButton"
           loading={registerMutation.isLoading}
           onClick={onClick}
         >
